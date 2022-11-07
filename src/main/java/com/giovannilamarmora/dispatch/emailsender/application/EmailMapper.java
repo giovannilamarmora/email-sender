@@ -8,28 +8,21 @@ import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
 
 @Component
 public class EmailMapper {
 
   private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-  @Autowired private Dispatcher dispatcher;
-
-  @Value("classpath:/mail-logo.png")
-  private Resource resourceFile;
 
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
   public SimpleMailMessage getSimpleMailMessage(EmailSenderDTO emailSenderDTO) {
@@ -61,9 +54,10 @@ public class EmailMapper {
       EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
       throws MessagingException, UtilsException {
     LOG.info("MimeMessageHelper Mapper");
-    MimeMessage message = dispatcher.emailSender.createMimeMessage();
+    JavaMailSender sender = new JavaMailSenderImpl();
+    MimeMessage message = sender.createMimeMessage();
     MimeMessageHelper helper =
-        htmlText
+        htmlText != null && !htmlText
             ? new MimeMessageHelper(message, true)
             : new MimeMessageHelper(message, true, "UTF-8");
 
@@ -90,13 +84,10 @@ public class EmailMapper {
     // TODO: Need to be tested
     if (!multipartFile.isEmpty()) {
       AttachmentDTO attachmentDTO = fromPartToDto(multipartFile);
-      FileSystemResource file =
-          new FileSystemResource(new File(attachmentDTO.getBody().toString()));
-      helper.addAttachment(attachmentDTO.getFileName(), file);
+      helper.addAttachment(attachmentDTO.getFileName(), multipartFile);
     }
-    if (htmlText) {
+    if (htmlText != null && htmlText) {
       helper.setText(emailSenderDTO.getText(), true);
-      helper.addInline("attachment.png", resourceFile);
     }
     return message;
   }
