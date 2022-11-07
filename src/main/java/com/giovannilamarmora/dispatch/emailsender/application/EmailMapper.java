@@ -1,0 +1,114 @@
+package com.giovannilamarmora.dispatch.emailsender.application;
+
+import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
+import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
+import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
+import com.github.giovannilamarmora.utils.exception.UtilsException;
+import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
+import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.io.IOException;
+
+@Component
+public class EmailMapper {
+
+  private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+  @Autowired private Dispatcher dispatcher;
+
+  @Value("classpath:/mail-logo.png")
+  private Resource resourceFile;
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  public SimpleMailMessage getSimpleMailMessage(EmailSenderDTO emailSenderDTO) {
+    LOG.info("SimpleMailMessage Mapper");
+    SimpleMailMessage message = new SimpleMailMessage();
+    if (emailSenderDTO.getBbc() != null && !emailSenderDTO.getBbc().isBlank()) {
+      message.setBcc(emailSenderDTO.getBbc());
+    }
+    if (emailSenderDTO.getCc() != null && !emailSenderDTO.getCc().isBlank()) {
+      message.setCc(emailSenderDTO.getCc());
+    }
+    if (emailSenderDTO.getFrom() != null && !emailSenderDTO.getFrom().isBlank()) {
+      message.setFrom(emailSenderDTO.getFrom());
+    }
+    if (emailSenderDTO.getReplyTo() != null && !emailSenderDTO.getReplyTo().isBlank()) {
+      message.setReplyTo(emailSenderDTO.getReplyTo());
+    }
+    if (emailSenderDTO.getSentDate() != null) {
+      message.setSentDate(emailSenderDTO.getSentDate());
+    }
+    message.setSubject(emailSenderDTO.getSubject());
+    message.setText(emailSenderDTO.getText());
+    message.setTo(emailSenderDTO.getTo());
+    return message;
+  }
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  public MimeMessage getMimeMessageHelper(
+      EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
+      throws MessagingException, UtilsException {
+    LOG.info("MimeMessageHelper Mapper");
+    MimeMessage message = dispatcher.emailSender.createMimeMessage();
+    MimeMessageHelper helper =
+        htmlText
+            ? new MimeMessageHelper(message, true)
+            : new MimeMessageHelper(message, true, "UTF-8");
+
+    if (emailSenderDTO.getBbc() != null && !emailSenderDTO.getBbc().isBlank()) {
+      helper.setBcc(emailSenderDTO.getBbc());
+    }
+    if (emailSenderDTO.getCc() != null && !emailSenderDTO.getCc().isBlank()) {
+      helper.setCc(emailSenderDTO.getCc());
+    }
+    if (emailSenderDTO.getFrom() != null && !emailSenderDTO.getFrom().isBlank()) {
+      helper.setFrom(emailSenderDTO.getFrom());
+    }
+    if (emailSenderDTO.getReplyTo() != null && !emailSenderDTO.getReplyTo().isBlank()) {
+      helper.setReplyTo(emailSenderDTO.getReplyTo());
+    }
+    if (emailSenderDTO.getSentDate() != null) {
+      helper.setSentDate(emailSenderDTO.getSentDate());
+    }
+
+    helper.setSubject(emailSenderDTO.getSubject());
+    helper.setText(emailSenderDTO.getText());
+    helper.setTo(emailSenderDTO.getTo());
+
+    // TODO: Need to be tested
+    if (!multipartFile.isEmpty()) {
+      AttachmentDTO attachmentDTO = fromPartToDto(multipartFile);
+      FileSystemResource file =
+          new FileSystemResource(new File(attachmentDTO.getBody().toString()));
+      helper.addAttachment(attachmentDTO.getFileName(), file);
+    }
+    if (htmlText) {
+      helper.setText(emailSenderDTO.getText(), true);
+      helper.addInline("attachment.png", resourceFile);
+    }
+    return message;
+  }
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  private AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
+    try {
+      return new AttachmentDTO(
+          file.getOriginalFilename(), file.getContentType(), file.getSize(), file.getBytes());
+    } catch (IOException e) {
+      LOG.error("Error on converting Attachment: {}", e.getMessage());
+      throw new UtilsException(EmailException.ERR_MAIL_SEND_001, e.getMessage());
+    }
+  }
+}
