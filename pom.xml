@@ -10,7 +10,8 @@
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.5</version>
+    <packaging>jar</packaging>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -84,6 +85,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>email-sender</finalName>
     </build>
 
 </project>
