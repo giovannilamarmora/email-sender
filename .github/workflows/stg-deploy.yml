@@ -55,7 +55,8 @@ jobs:
             [{
                 "id": "github",
                 "username": "${{ secrets.USERNAME_GITHUB }}",
-                "password": "${{ secrets.ACCESS_TOKEN }}"
+                "password": "${{ secrets.ACCESS_TOKEN }}",
+                "url": "https://maven.pkg.github.com/giovannilamarmora/utils"
             }]
       - name: Install with Maven
         run: mvn clean install
