@@ -37,7 +37,7 @@ public class EmailService implements IEmailService {
       EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
       throws JsonProcessingException, UtilsException {
     LOG.info("Building Message with Data {}", objectMapper.writeValueAsString(emailSenderDTO));
-    if (htmlText == null || !htmlText || multipartFile == null || multipartFile.isEmpty()) {
+    if ((htmlText == null || !htmlText) && (multipartFile == null || multipartFile.isEmpty())) {
       sendSimpleMessage(emailSenderDTO);
     }
     if (multipartFile != null || htmlText != null) {
