@@ -56,7 +56,8 @@ jobs:
           servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Install with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
+        #run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
+        run: mvn clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
