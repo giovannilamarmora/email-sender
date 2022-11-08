@@ -106,12 +106,12 @@
         </profile>
     </profiles>
 
-    <!--<repositories>
+    <repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/giovannilamarmora/utils</url>
         </repository>
-    </repositories>-->
+    </repositories>
 
     <build>
         <plugins>
