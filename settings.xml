@@ -41,14 +41,6 @@
     <servers>
         <server>
             <id>github</id>
-            <configuration>
-                <httpHeaders>
-                    <property>
-                        <name>Authorization</name>
-                        <value>Bearer ${GITHUB_TOKEN}</value>
-                    </property>
-                </httpHeaders>
-            </configuration>
             <username>${GITHUB_USERNAME}</username>
             <password>${GITHUB_TOKEN}</password>
         </server>
