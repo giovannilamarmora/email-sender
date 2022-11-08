@@ -82,7 +82,7 @@ public class EmailMapper {
     helper.setTo(emailSenderDTO.getTo());
 
     // TODO: Need to be tested
-    if (!multipartFile.isEmpty()) {
+    if (multipartFile != null && !multipartFile.isEmpty()) {
       AttachmentDTO attachmentDTO = fromPartToDto(multipartFile);
       helper.addAttachment(attachmentDTO.getFileName(), multipartFile);
     }
