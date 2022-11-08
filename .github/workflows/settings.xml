@@ -25,30 +25,6 @@
                         <enabled>true</enabled>
                     </releases>
                 </repository>
-                <repository>
-                    <id>splunk-artifactory</id>
-                    <name>Splunk Releases</name>
-                    <url>https://splunk.artifactoryonline.com/artifactory/ext-releases-local</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-                <repository>
-                    <id>springio</id>
-                    <name>Spring IO</name>
-                    <url>https://repo.spring.io/plugins-release</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
-                <repository>
-                    <id>liferay</id>
-                    <name>Liferay Repository</name>
-                    <url>https://repository.liferay.com/nexus/content/repositories/public/</url>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
             </repositories>
             <pluginRepositories>
                 <pluginRepository>
