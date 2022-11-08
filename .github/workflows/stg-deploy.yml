@@ -51,7 +51,7 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
       - uses: s4u/maven-settings-action@v2.7.0
         with:
-          servers: '[{"id": "github", "username": "giovannilamarmora", "password": "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"}]'
+          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Install with Maven
         run: mvn -U clean install
