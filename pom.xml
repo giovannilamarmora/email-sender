@@ -79,15 +79,12 @@
         </dependency>
     </dependencies>
 
-    <repositories>
+    <!--<repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/giovannilamarmora/utils</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
         </repository>
-    </repositories>
+    </repositories>-->
 
     <build>
         <plugins>
