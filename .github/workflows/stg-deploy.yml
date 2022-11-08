@@ -49,14 +49,16 @@ jobs:
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
-      - uses: s4u/maven-settings-action@v2.7.0
-        with:
-          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
-          githubServer: false
+          server-username: GITHUB_USER_REF  # env variable name for username
+          server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
+      #- uses: s4u/maven-settings-action@v2.7.0
+      #  with:
+      #    servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
+      #    githubServer: false
       - name: Install with Maven
         run: mvn -U clean install
         env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          GITHUB_USER_REF: ${{ secrets.USERNAME_GITHUB }}
           GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
 
   test:
