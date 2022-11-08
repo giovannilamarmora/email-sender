@@ -51,13 +51,13 @@ jobs:
           #settings-path: ${{ github.workspace }} # location for the settings.xml file
           #server-username: GITHUB_USER_REF  # env variable name for username
           #server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
-      - uses: s4u/maven-settings-action@v2
+      - uses: s4u/maven-settings-action@v2.7.0
         with:
           servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
           githubServer: false
       - name: Install with Maven
-        #run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
-        run: mvn -B package --file pom.xml
+        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
+        #run: mvn clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
