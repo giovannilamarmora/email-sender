@@ -18,13 +18,13 @@
         <java.version>11</java.version>
     </properties>
 
-    <!--<distributionManagement>
+    <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub Giovanni Lamarmora Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/giovannilamarmora/utils</url>
         </repository>
-    </distributionManagement>-->
+    </distributionManagement>
 
     <dependencies>
         <dependency>
