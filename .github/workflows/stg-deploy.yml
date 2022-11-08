@@ -52,7 +52,7 @@ jobs:
           servers: '[{"id": "github", "username": "giovannilamarmora", "password": "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"}]'
           githubServer: false
       - name: Install with Maven
-        run: mvn clean install
+        run: mvn -U clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
