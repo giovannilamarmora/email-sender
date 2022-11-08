@@ -54,8 +54,8 @@ jobs:
           servers: |
             [{
                 "id": "github",
-                "username": "${{ secret.USERNAME_GITHUB }}",
-                "password": "${{ secret.ACCESS_TOKEN }}"
+                "username": "${{ secrets.USERNAME_GITHUB }}",
+                "password": "${{ secrets.ACCESS_TOKEN }}"
             }]
       - name: Install with Maven
         run: mvn clean install
