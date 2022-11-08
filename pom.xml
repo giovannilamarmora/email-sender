@@ -109,7 +109,11 @@
     <repositories>
         <repository>
             <id>github</id>
+            <name>GitHub Giovanni Lamarmora Apache Maven Packages</name>
             <url>https://maven.pkg.github.com/giovannilamarmora/utils</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
