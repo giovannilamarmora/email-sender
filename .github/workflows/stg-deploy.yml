@@ -49,14 +49,13 @@ jobs:
           distribution: 'adopt'
       - uses: s4u/maven-settings-action@v2.7.0
         with:
-          servers: |
-            [{
-                "id": "github",
-                "username": "${{ secrets.USERNAME_GITHUB }}",
-                "password": "${{ secrets.ACCESS_TOKEN }}"
-            }]
+          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
+          githubServer: false
       - name: Install with Maven
         run: mvn clean install
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
