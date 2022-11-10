@@ -1,4 +1,4 @@
-package com.giovannilamarmora.dispatch.emailsender.application;
+package com.giovannilamarmora.dispatch.emailsender.application.mapper;
 
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
@@ -12,6 +12,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -93,13 +94,28 @@ public class EmailMapper {
   }
 
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
-  private AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
+  public AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
     try {
       return new AttachmentDTO(
-          file.getOriginalFilename(), file.getContentType(), file.getSize(), file.getBytes());
+          file.getName(),
+          file.getOriginalFilename(),
+          file.getContentType(),
+          file.getSize(),
+          file.getBytes());
     } catch (IOException e) {
       LOG.error("Error on converting Attachment: {}", e.getMessage());
       throw new UtilsException(EmailException.ERR_MAIL_SEND_001, e.getMessage());
     }
+  }
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  public MultipartFile fromDtoToPart(AttachmentDTO attachmentDTO) {
+    MultipartFile file =
+        new MockMultipartFile(
+            attachmentDTO.getName(),
+            attachmentDTO.getFileName(),
+            attachmentDTO.getContentType(),
+            attachmentDTO.getBody());
+    return file;
   }
 }

@@ -5,11 +5,10 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.github.giovannilamarmora.utils.exception.UtilsException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface IEmailService {
 
   ResponseEntity<EmailResponseDTO> sendEmail(
-      EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
+      EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename)
       throws JsonProcessingException, UtilsException;
 }
