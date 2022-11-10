@@ -55,6 +55,7 @@
             <groupId>com.github.giovannilamarmora.utils</groupId>
             <artifactId>utils-code</artifactId>
             <version>0.1.7</version>
+            <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/packages/utils-code-0.1.7.jar</systemPath>
         </dependency>
         <dependency>
