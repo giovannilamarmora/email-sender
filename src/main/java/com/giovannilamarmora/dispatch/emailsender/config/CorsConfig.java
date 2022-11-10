@@ -1,3 +1,4 @@
+/*
 package com.giovannilamarmora.dispatch.emailsender.config;
 
 import org.slf4j.Logger;
@@ -26,3 +27,4 @@ public class CorsConfig implements Filter {
     chain.doFilter(req, res);
   }
 }
+*/
