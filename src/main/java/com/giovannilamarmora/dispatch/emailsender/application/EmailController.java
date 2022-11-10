@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @Logged
 @RestController
 @RequestMapping("/v1")
-// @CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*")
 public class EmailController {
 
   @Autowired private IEmailService emailService;
