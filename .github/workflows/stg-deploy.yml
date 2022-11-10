@@ -39,6 +39,11 @@ jobs:
   install:
     name: 🌱 Install
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+      repository-projects: write
+      packages: write
     needs: [ setting-up, java ]
     steps:
       - uses: actions/checkout@v3
@@ -47,20 +52,20 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          #settings-path: ${{ github.workspace }} # location for the settings.xml file
-          #server-username: GITHUB_USER_REF  # env variable name for username
-          #server-password: GITHUB_TOKEN_REF # env variable name for GitHub Personal Access Token
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          server-username: GITHUB_USERNAME  # env variable name for username
+          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - uses: s4u/maven-settings-action@v2.7.0
         with:
-          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${GITHUB_TOKEN_REF}"}]'
+          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}"}]'
           githubServer: false
       - name: Install with Maven
-        run: mvn -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
-        #run: mvn clean install
+        run: mvn -X -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
+        #run: mvn -X clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          GITHUB_TOKEN_REF: ${{ secrets.ACCESS_TOKEN }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
