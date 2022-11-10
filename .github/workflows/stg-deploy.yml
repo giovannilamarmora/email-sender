@@ -63,6 +63,7 @@ jobs:
           plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
           servers: '[{ "id": "github", "username": "giovannilamarmora", "password": "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" }]'
           output_file: .m2/settings.xml
+        run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
       - name: Install with Maven
         run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
         #run: mvn -X clean install
