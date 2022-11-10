@@ -68,8 +68,8 @@ jobs:
           servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
           output_file: .m2/settings.xml
       - name: Install with Maven
-        #run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
-        run: mvn -X clean install
+        run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
+        #run: mvn -X clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
