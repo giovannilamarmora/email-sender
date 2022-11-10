@@ -56,13 +56,16 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-      - uses: s4u/maven-settings-action@v2.7.0
+      - name: maven-settings-xml-action
+        uses: whelk-io/maven-settings-xml-action@v20
         with:
-          servers: '[{"id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}"}]'
-          githubServer: false
+          repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }]'
+          plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
+          servers: '[{ "id": "github", "username": "giovannilamarmora", "password": "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" }]'
+          output_file: .m2/settings.xml
       - name: Install with Maven
-        run: mvn -X -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
-        #run: mvn -X clean install
+        #run: mvn -X -s $GITHUB_WORKSPACE/.github/workflows/settings.xml clean install
+        run: mvn -X clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
