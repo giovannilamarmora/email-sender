@@ -90,7 +90,7 @@
         </dependency>
     </dependencies>
 
-    <!--<repositories>
+    <repositories>
         <repository>
             <id>github</id>
             <name>GitHub Giovanni Lamarmora Apache Maven Packages</name>
@@ -99,7 +99,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-    </repositories>-->
+    </repositories>
 
     <build>
         <plugins>
