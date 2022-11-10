@@ -1,5 +1,7 @@
 package com.giovannilamarmora.dispatch.emailsender.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -18,6 +20,9 @@ import java.util.Properties;
     })
 @PropertySource(value = {"classpath:application.properties"})
 public class AppConfig {
+
+  private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+
   @Value("${spring.mail.host}")
   private String mailServerHost;
 
