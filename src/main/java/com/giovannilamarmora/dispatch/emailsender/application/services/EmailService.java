@@ -3,9 +3,10 @@ package com.giovannilamarmora.dispatch.emailsender.application.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.giovannilamarmora.dispatch.emailsender.application.Dispatcher;
-import com.giovannilamarmora.dispatch.emailsender.application.EmailMapper;
+import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
+import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
 import com.github.giovannilamarmora.utils.exception.UtilsException;
 import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
@@ -30,18 +31,26 @@ public class EmailService implements IEmailService {
   private final ObjectMapper objectMapper = new ObjectMapper();
   @Autowired private Dispatcher dispatcher;
   @Autowired private EmailMapper emailMapper;
+  @Autowired private AttachmentCacheService attachmentCacheService;
 
   @Override
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
   public ResponseEntity<EmailResponseDTO> sendEmail(
-      EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
+      EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename)
       throws JsonProcessingException, UtilsException {
+    MultipartFile file = null;
+    if (filename != null && !filename.isBlank()) {
+      LOG.info("Building attachment with filename {}", filename);
+      file = getFile(filename);
+      attachmentCacheService.removeAttachment(filename);
+    }
+
     LOG.info("Building Message with Data {}", objectMapper.writeValueAsString(emailSenderDTO));
-    if (htmlText == null || !htmlText || multipartFile == null || multipartFile.isEmpty()) {
+    if ((htmlText == null || !htmlText) && (file == null || file.isEmpty())) {
       sendSimpleMessage(emailSenderDTO);
     }
-    if (multipartFile != null || htmlText != null) {
-      sendMessageWithAttachmentOrHtml(emailSenderDTO, multipartFile, htmlText);
+    if (file != null || htmlText != null) {
+      sendMessageWithAttachmentOrHtml(emailSenderDTO, file, htmlText);
     }
     EmailResponseDTO responseDTO = new EmailResponseDTO();
     responseDTO.setMessage(
@@ -69,5 +78,10 @@ public class EmailService implements IEmailService {
           e.getMessage());
       throw new UtilsException(EmailException.ERR_MAIL_SEND_002, e.getMessage());
     }
+  }
+
+  private MultipartFile getFile(String filename) {
+    AttachmentDTO attachmentDTO = attachmentCacheService.getAttachment(filename);
+    return emailMapper.fromDtoToPart(attachmentDTO);
   }
 }

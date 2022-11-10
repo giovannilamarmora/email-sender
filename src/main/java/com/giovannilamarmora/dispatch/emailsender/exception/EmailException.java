@@ -9,7 +9,9 @@ public enum EmailException implements ExceptionCode {
   ERR_MAIL_SEND_002(
       "ERROR-SMTP-SERVER",
       HttpStatus.INTERNAL_SERVER_ERROR,
-      "An error occurred during sending process");
+      "An error occurred during sending process"),
+  ERR_MAIL_SEND_003(
+      "ERROR-CACHING", HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred during caching data");
 
   private final HttpStatus status;
   private final String message;

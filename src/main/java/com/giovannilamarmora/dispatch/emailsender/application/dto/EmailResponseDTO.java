@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +14,6 @@ public class EmailResponseDTO {
   private String message;
 
   public EmailResponseDTO() {
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
   }
 }

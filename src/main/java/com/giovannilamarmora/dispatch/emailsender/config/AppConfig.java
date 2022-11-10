@@ -1,4 +1,4 @@
-package com.giovannilamarmora.dispatch.emailsender.application;
+package com.giovannilamarmora.dispatch.emailsender.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.giovannilamarmora.dispatch.emailsender.application;
+package com.giovannilamarmora.dispatch.emailsender.application.mapper;
 
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
@@ -8,28 +8,22 @@ import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.File;
 import java.io.IOException;
 
 @Component
 public class EmailMapper {
 
   private final Logger LOG = LoggerFactory.getLogger(this.getClass());
-  @Autowired private Dispatcher dispatcher;
-
-  @Value("classpath:/mail-logo.png")
-  private Resource resourceFile;
 
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
   public SimpleMailMessage getSimpleMailMessage(EmailSenderDTO emailSenderDTO) {
@@ -61,9 +55,10 @@ public class EmailMapper {
       EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
       throws MessagingException, UtilsException {
     LOG.info("MimeMessageHelper Mapper");
-    MimeMessage message = dispatcher.emailSender.createMimeMessage();
+    JavaMailSender sender = new JavaMailSenderImpl();
+    MimeMessage message = sender.createMimeMessage();
     MimeMessageHelper helper =
-        htmlText
+        htmlText != null && !htmlText
             ? new MimeMessageHelper(message, true)
             : new MimeMessageHelper(message, true, "UTF-8");
 
@@ -88,27 +83,39 @@ public class EmailMapper {
     helper.setTo(emailSenderDTO.getTo());
 
     // TODO: Need to be tested
-    if (!multipartFile.isEmpty()) {
+    if (multipartFile != null && !multipartFile.isEmpty()) {
       AttachmentDTO attachmentDTO = fromPartToDto(multipartFile);
-      FileSystemResource file =
-          new FileSystemResource(new File(attachmentDTO.getBody().toString()));
-      helper.addAttachment(attachmentDTO.getFileName(), file);
+      helper.addAttachment(attachmentDTO.getFileName(), multipartFile);
     }
-    if (htmlText) {
+    if (htmlText != null && htmlText) {
       helper.setText(emailSenderDTO.getText(), true);
-      helper.addInline("attachment.png", resourceFile);
     }
     return message;
   }
 
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
-  private AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
+  public AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
     try {
       return new AttachmentDTO(
-          file.getOriginalFilename(), file.getContentType(), file.getSize(), file.getBytes());
+          file.getName(),
+          file.getOriginalFilename(),
+          file.getContentType(),
+          file.getSize(),
+          file.getBytes());
     } catch (IOException e) {
       LOG.error("Error on converting Attachment: {}", e.getMessage());
       throw new UtilsException(EmailException.ERR_MAIL_SEND_001, e.getMessage());
     }
+  }
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  public MultipartFile fromDtoToPart(AttachmentDTO attachmentDTO) {
+    MultipartFile file =
+        new MockMultipartFile(
+            attachmentDTO.getName(),
+            attachmentDTO.getFileName(),
+            attachmentDTO.getContentType(),
+            attachmentDTO.getBody());
+    return file;
   }
 }
