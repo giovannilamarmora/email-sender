@@ -29,6 +29,8 @@ jobs:
   java:
     name: 🔧 Java 11
     runs-on: ubuntu-latest
+    environment:
+      name: stg-email-sender
     permissions:
       contents: read
       packages: write
@@ -40,6 +42,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   install:
     name: 🌱 Install
@@ -63,12 +68,8 @@ jobs:
       #    servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
       #    output_file: .m2/settings.xml
       - name: Install with Maven
-        environment:
-          name: stg-email-sender
         run: mvn -X clean install
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+
 
   test:
     name: 📂 Test
