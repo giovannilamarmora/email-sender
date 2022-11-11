@@ -11,8 +11,6 @@ jobs:
   setting-up:
     name: ☁️ Setting Up
     runs-on: ubuntu-latest
-    environment:
-      name: stg-email-sender
     permissions:
       contents: read
       packages: write
@@ -20,12 +18,6 @@ jobs:
     steps:
       - name: 🚀 Setting Up Deployment Package
         run: echo Process Started!!!
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-          HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-          HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
-          HEROKU_EMAIL: ${{secrets.HEROKU_EMAIL}}
 
   java:
     name: 🔧 Java 11
@@ -40,13 +32,12 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: GITHUB_USERNAME  # env variable name for username
-          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
 
   install:
     name: 🌱 Install
     runs-on: ubuntu-latest
+    environment:
+      name: prod-email-sender
     permissions:
       contents: write
       actions: write
@@ -69,6 +60,8 @@ jobs:
   test:
     name: 📂 Test
     runs-on: ubuntu-latest
+    environment:
+      name: prod-email-sender
     needs: [ install, java ]
     steps:
       - uses: actions/checkout@v3
@@ -86,6 +79,8 @@ jobs:
   build:
     name: 📂 Build
     runs-on: ubuntu-latest
+    environment:
+      name: prod-email-sender
     needs: [ test, java ]
     steps:
       - uses: actions/checkout@v3
@@ -103,6 +98,8 @@ jobs:
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
+    environment:
+      name: prod-email-sender
     needs: [ java, build ]
     steps:
       - uses: actions/checkout@v2

@@ -79,9 +79,9 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: 📂 Test with Maven
         run: mvn test
-        #env:
-        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   build:
     name: 📂 Build
@@ -99,3 +99,6 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
