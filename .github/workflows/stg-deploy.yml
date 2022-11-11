@@ -137,7 +137,7 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-      - uses: actions/checkout@v2
+      #- uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
