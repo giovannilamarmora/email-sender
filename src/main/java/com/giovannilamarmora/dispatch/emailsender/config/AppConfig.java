@@ -14,7 +14,7 @@ import java.util.Properties;
 @ComponentScan(
     basePackages = {
       "com.giovannilamarmora.dispatch.emailsender.*",
-      "com.github.giovannilamarmora.utils"
+      "io.github.giovannilamarmora.utils"
     })
 @PropertySource(value = {"classpath:application.properties"})
 public class AppConfig {

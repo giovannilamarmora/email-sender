@@ -1,6 +1,6 @@
 package com.giovannilamarmora.dispatch.emailsender.exception;
 
-import com.github.giovannilamarmora.utils.exception.ExceptionCode;
+import io.github.giovannilamarmora.utils.exception.ExceptionCode;
 import org.springframework.http.HttpStatus;
 
 public enum EmailException implements ExceptionCode {
