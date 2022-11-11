@@ -100,6 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod-email-sender
+      url: https://prod-email-sender.herokuapp.com
     needs: [ java, build ]
     steps:
       - uses: actions/checkout@v3
@@ -117,7 +118,6 @@ jobs:
           updateFile: true
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        url: https://prod-email-sender.herokuapp.com/
         with:
           heroku_api_key: HEROKU_API_KEY
           heroku_app_name: HEROKU_APP_NAME #Must be unique in Heroku
