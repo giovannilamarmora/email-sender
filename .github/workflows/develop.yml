@@ -4,7 +4,7 @@
 name: Develop
 
 on:
-  pull:
+  pull_request:
     branches: [ develop ]
 
 environment: #Used to get data from environment
