@@ -59,8 +59,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: ${env.GITHUB_USERNAME}  # env variable name for username
-          server-password: ${env.API_TOKEN_GITHUB} # env variable name for GitHub Personal Access Token
+          server-username: ${{env.GITHUB_USERNAME}}  # env variable name for username
+          server-password: ${{env.API_TOKEN_GITHUB}} # env variable name for GitHub Personal Access Token
       #- name: Setup settings-xml
       #  uses: whelk-io/maven-settings-xml-action@v20
       #  with:
