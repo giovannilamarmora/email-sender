@@ -38,11 +38,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod-email-sender
-    permissions:
-      contents: write
-      actions: write
-      repository-projects: write
-      packages: write
     needs: [ setting-up, java ]
     steps:
       - uses: actions/checkout@v3
@@ -56,6 +51,9 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: Install with Maven
         run: mvn -X clean install
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
@@ -75,6 +73,9 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: 📂 Test with Maven
         run: mvn test
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   build:
     name: 📂 Build
@@ -94,6 +95,9 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   deploy:
     name: 🚀 Deploy
