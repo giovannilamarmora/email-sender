@@ -61,8 +61,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: ${{env.GITHUB_USERNAME}}  # env variable name for username
-          server-password: ${{env.API_TOKEN_GITHUB}} # env variable name for GitHub Personal Access Token
+          server-username: $GITHUB_USERNAME  # env variable name for username
+          server-password: $API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       #- name: Setup settings-xml
       #  uses: whelk-io/maven-settings-xml-action@v20
       #  with:
@@ -71,7 +71,6 @@ jobs:
       #    servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
       #    output_file: .m2/settings.xml
       - name: Install with Maven
-        #run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
         run: mvn -X clean install
         #env:
         #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
