@@ -118,8 +118,8 @@ jobs:
         with:
           valueFile: './src/main/resources/application.yaml'
           propertyPath: |
-            'spring.email.username'
-            'spring.email.password'
+            'spring.mail.username'
+            'spring.mail.password'
           value: |
             ${{secrets.SPRING_GOOGLE_EMAIL}}
             ${{secrets.SPRING_GOOGLE_TOKEN}}
