@@ -8,7 +8,6 @@ on:
     branches: [ develop ]
 
 env:
-  name: stg-email-sender
   GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
   API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
   HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
@@ -45,6 +44,9 @@ jobs:
   install:
     name: 🌱 Install
     runs-on: ubuntu-latest
+    environment:
+      name: stg-email-sender
+      url: https://stg-email-sender.herokuapp.com/
     permissions:
       contents: write
       actions: write
