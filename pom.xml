@@ -10,20 +10,12 @@
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.7</version>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
     </properties>
-
-    <!--    <distributionManagement>
-            <repository>
-                <id>github</id>
-                <name>GitHub Giovanni Lamarmora Apache Maven Packages</name>
-                <url>https://maven.pkg.github.com/giovannilamarmora/utils</url>
-            </repository>
-        </distributionManagement>-->
 
     <dependencies>
         <dependency>
