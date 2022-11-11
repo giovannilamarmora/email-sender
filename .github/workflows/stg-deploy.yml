@@ -7,6 +7,16 @@ on:
   push:
     branches: [ develop ]
 
+environment: #Used to get data from environment
+  name: stg-email-sender
+
+env:
+  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+  HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+  HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
+  HEROKU_EMAIL: ${{secrets.HEROKU_EMAIL}}
+
 jobs:
   setting-up:
     name: ☁️ Setting Up
@@ -63,9 +73,9 @@ jobs:
       - name: Install with Maven
         #run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
         run: mvn -X clean install
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        #env:
+        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
@@ -83,9 +93,9 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: 📂 Test with Maven
         run: mvn test
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        #env:
+        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   build:
     name: 📂 Build
@@ -103,21 +113,24 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        #env:
+        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     needs: [ java, build ]
-    environment:
-      name: stg-email-sender
-      url: https://stg-email-sender.herokuapp.com/
+    #environment:
+    #name: stg-email-sender
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        url: https://stg-email-sender.herokuapp.com/
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
-          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          heroku_api_key: HEROKU_API_KEY
+          heroku_app_name: HEROKU_APP_NAME #Must be unique in Heroku
+          heroku_email: HEROKU_EMAIL
+          #heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          #heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
+          #heroku_email: ${{secrets.HEROKU_EMAIL}}
