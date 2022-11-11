@@ -46,7 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: stg-email-sender
-      url: https://stg-email-sender.herokuapp.com/
     permissions:
       contents: write
       actions: write
@@ -61,8 +60,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: $GITHUB_USERNAME  # env variable name for username
-          server-password: $API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
+          server-username: GITHUB_USERNAME  # env variable name for username
+          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       #- name: Setup settings-xml
       #  uses: whelk-io/maven-settings-xml-action@v20
       #  with:
@@ -72,9 +71,9 @@ jobs:
       #    output_file: .m2/settings.xml
       - name: Install with Maven
         run: mvn -X clean install
-        #env:
-        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
