@@ -6,11 +6,12 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.services.AttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IEmailService;
-import com.github.giovannilamarmora.utils.exception.UtilsException;
-import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
-import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
-import com.github.giovannilamarmora.utils.interceptors.Logged;
+import io.github.giovannilamarmora.utils.exception.UtilsException;
+import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
+import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
+import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,12 @@ public class EmailController {
       value = "/send-email",
       consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @Operation(description = "Send Email")
+  @Tag(
+      name = "Email Sender",
+      description = "API to send email from giovannilamarmora.working@gmail.com")
+  @Operation(
+      description = "API to send email from giovannilamarmora.working@gmail.com",
+      tags = "Email Sender")
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_CONTROLLER)
   public ResponseEntity<EmailResponseDTO> sendEmail(
       @RequestBody @Valid EmailSenderDTO emailSenderDTO,
@@ -46,7 +52,12 @@ public class EmailController {
       value = "/upload/attachment",
       consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @Operation(description = "Send Email")
+  @Tag(
+      name = "Upload Attachment",
+      description = "API to upload the attachment before to send email")
+  @Operation(
+      description = "API to upload the attachment before to send email",
+      tags = "Upload Attachment")
   @LogInterceptor(type = LogTimeTracker.ActionType.APP_CONTROLLER)
   public ResponseEntity<AttachmentDTO> uploadAttachment(
       @RequestPart(name = "file") MultipartFile file) throws UtilsException {

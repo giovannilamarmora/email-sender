@@ -1,10 +1,10 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: Stg EmailSender Deploy
+name: Develop
 
 on:
-  push:
+  pull_request:
     branches: [ develop ]
 
 jobs:
@@ -38,11 +38,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: stg-email-sender
-    permissions:
-      contents: write
-      actions: write
-      repository-projects: write
-      packages: write
     needs: [ setting-up, java ]
     steps:
       - uses: actions/checkout@v3
@@ -54,11 +49,19 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
+      #- name: Setup settings-xml
+      #  uses: whelk-io/maven-settings-xml-action@v20
+      #  with:
+      #    repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }]'
+      #    plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
+      #    servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
+      #    output_file: .m2/settings.xml
       - name: Install with Maven
         run: mvn -X clean install
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+
 
   test:
     name: 📂 Test
@@ -103,31 +106,3 @@ jobs:
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
           API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-
-  deploy:
-    name: 🚀 Deploy
-    runs-on: ubuntu-latest
-    environment:
-      name: stg-email-sender
-      url: https://stg-email-sender.herokuapp.com
-    needs: [ java, build ]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Update application.yaml
-        uses: fjogeleit/yaml-update-action@main
-        with:
-          valueFile: './src/main/resources/application.yaml'
-          title: 'Version Updates '
-          changes: |
-            {
-              "spring.mail.username": "${{ secrets.SPRING_GOOGLE_EMAIL }}",
-              "spring.mail.password": "${{ secrets.SPRING_GOOGLE_TOKEN }}"
-            }
-          commitChange: false
-          updateFile: true
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
