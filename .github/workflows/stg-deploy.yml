@@ -125,19 +125,7 @@ jobs:
             }
           commitChange: false
           updateFile: true
-      - uses: actions/checkout@v3
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
-          distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: GITHUB_USERNAME  # env variable name for username
-          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-      #- uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
