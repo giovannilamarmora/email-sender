@@ -8,10 +8,10 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import com.github.giovannilamarmora.utils.exception.UtilsException;
-import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
-import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
-import com.github.giovannilamarmora.utils.interceptors.Logged;
+import io.github.giovannilamarmora.utils.exception.UtilsException;
+import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
+import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
+import io.github.giovannilamarmora.utils.interceptors.Logged;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

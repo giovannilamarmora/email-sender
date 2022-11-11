@@ -6,10 +6,10 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.services.AttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IEmailService;
-import com.github.giovannilamarmora.utils.exception.UtilsException;
-import com.github.giovannilamarmora.utils.interceptors.LogInterceptor;
-import com.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
-import com.github.giovannilamarmora.utils.interceptors.Logged;
+import io.github.giovannilamarmora.utils.exception.UtilsException;
+import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
+import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
+import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
