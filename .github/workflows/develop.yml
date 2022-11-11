@@ -40,12 +40,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          server-username: GITHUB_USERNAME  # env variable name for username
-          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-        env:
-          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   install:
     name: 🌱 Install
@@ -70,6 +64,9 @@ jobs:
       #    output_file: .m2/settings.xml
       - name: Install with Maven
         run: mvn -X clean install
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
 
   test:
