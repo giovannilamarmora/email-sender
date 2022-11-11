@@ -33,8 +33,6 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
   install:
     name: 🌱 Install
@@ -53,7 +51,6 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          #settings-path: ${{ github.workspace }} # location for the settings.xml file
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       #- name: Setup settings-xml
@@ -82,17 +79,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          #settings-path: ${{ github.workspace }} # location for the settings.xml file
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-      #- name: Setup settings-xml
-      #    uses: whelk-io/maven-settings-xml-action@v20
-      #    with:
-      #      repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }]'
-      #      plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
-      #      servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
-      #      output_file: .m2/settings.xml
-      - name: Test with Maven
+      - name: 📂 Test with Maven
         run: mvn test
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
@@ -110,18 +99,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          #settings-path: ${{ github.workspace }} # location for the settings.xml file
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-      #- name: Setup settings-xml
-      #    uses: whelk-io/maven-settings-xml-action@v20
-      #    with:
-      #      repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }]'
-      #      plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
-      #      servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
-      #      output_file: .m2/settings.xml
       - name: Build with Maven
-        #run: mvn -s /home/runner/work/email-sender/email-sender/.m2/settings.xml -B package --file pom.xml
         run: mvn -B package --file pom.xml
         env:
           GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
