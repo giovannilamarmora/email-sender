@@ -7,10 +7,8 @@ on:
   pull_request:
     branches: [ develop ]
 
-environment: #Used to get data from environment
-  name: stg-email-sender
-
 env:
+  name: stg-email-sender
   GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
   API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
   HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
