@@ -124,6 +124,19 @@ jobs:
     #environment:
     #name: stg-email-sender
     steps:
+      - uses: actions/checkout@v3
+      - name: Update application.yaml
+        uses: fjogeleit/yaml-update-action@main
+        with:
+          valueFile: './src/main/resources/application.yaml'
+          propertyPath: |
+            'spring.email.username'
+            'spring.email.password'
+          value: |
+            ${{secrets.SPRING_GOOGLE_EMAIL}}
+            ${{secrets.SPRING_GOOGLE_TOKEN}}
+          commitChange: false
+          updateFile: true
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         url: https://stg-email-sender.herokuapp.com/
