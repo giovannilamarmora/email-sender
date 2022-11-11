@@ -7,13 +7,6 @@ on:
   pull_request:
     branches: [ develop ]
 
-env:
-  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-  HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-  HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
-  HEROKU_EMAIL: ${{secrets.HEROKU_EMAIL}}
-
 jobs:
   setting-up:
     name: ☁️ Setting Up
@@ -62,9 +55,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          #server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          #server-username: GITHUB_USERNAME  # env variable name for username
-          #server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: GITHUB_USERNAME  # env variable name for username
+          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       #- name: Setup settings-xml
       #  uses: whelk-io/maven-settings-xml-action@v20
       #  with:

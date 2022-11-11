@@ -7,20 +7,12 @@ on:
   push:
     branches: [ develop ]
 
-environment: #Used to get data from environment
-  name: stg-email-sender
-
-env:
-  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
-  HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-  HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
-  HEROKU_EMAIL: ${{secrets.HEROKU_EMAIL}}
-
 jobs:
   setting-up:
     name: ☁️ Setting Up
     runs-on: ubuntu-latest
+    environment:
+      name: stg-email-sender
     permissions:
       contents: read
       packages: write
@@ -28,6 +20,12 @@ jobs:
     steps:
       - name: 🚀 Setting Up Deployment Package
         run: echo Process Started!!!
+        env:
+          GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
+          API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
+          HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
+          HEROKU_APP_NAME: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
+          HEROKU_EMAIL: ${{secrets.HEROKU_EMAIL}}
 
   java:
     name: 🔧 Java 11
@@ -35,7 +33,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-
     steps:
       - uses: actions/checkout@v3
       - name: 🔧 Set up JDK 11
@@ -43,6 +40,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          server-username: GITHUB_USERNAME  # env variable name for username
+          server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
 
   install:
     name: 🌱 Install
@@ -63,19 +63,8 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           server-username: GITHUB_USERNAME  # env variable name for username
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
-      #- name: Setup settings-xml
-      #  uses: whelk-io/maven-settings-xml-action@v20
-      #  with:
-      #    repositories: '[{ "id": "central", "url": "https://repo1.maven.org/maven2" }]'
-      #    plugin_repositories: '[{ "id": "github", "url": "https://maven.pkg.github.com/giovannilamarmora/utils" }]'
-      #    servers: '[{ "id": "github", "username": "${GITHUB_USERNAME}", "password": "${API_TOKEN_GITHUB}" }]'
-      #    output_file: .m2/settings.xml
       - name: Install with Maven
-        #run: mvn -X -s /home/runner/work/email-sender/email-sender/.m2/settings.xml clean install
         run: mvn -X clean install
-        #env:
-        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   test:
     name: 📂 Test
@@ -93,9 +82,6 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: 📂 Test with Maven
         run: mvn test
-        #env:
-        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   build:
     name: 📂 Build
@@ -113,16 +99,11 @@ jobs:
           server-password: API_TOKEN_GITHUB # env variable name for GitHub Personal Access Token
       - name: Build with Maven
         run: mvn -B package --file pom.xml
-        #env:
-        #  GITHUB_USERNAME: ${{ secrets.USERNAME_GITHUB }}
-        #  API_TOKEN_GITHUB: ${{ secrets.ACCESS_TOKEN }}
 
   deploy:
     name: 🚀 Deploy
     runs-on: ubuntu-latest
     needs: [ java, build ]
-    #environment:
-    #name: stg-email-sender
     steps:
       - uses: actions/checkout@v3
       - name: Update application.yaml
@@ -144,6 +125,3 @@ jobs:
           heroku_api_key: HEROKU_API_KEY
           heroku_app_name: HEROKU_APP_NAME #Must be unique in Heroku
           heroku_email: HEROKU_EMAIL
-          #heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          #heroku_app_name: ${{secrets.HEROKU_APP_NAME}} #Must be unique in Heroku
-          #heroku_email: ${{secrets.HEROKU_EMAIL}}
