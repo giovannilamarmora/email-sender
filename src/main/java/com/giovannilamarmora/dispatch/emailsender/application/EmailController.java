@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
-import com.giovannilamarmora.dispatch.emailsender.application.services.AttachmentCacheService;
+import com.giovannilamarmora.dispatch.emailsender.application.services.IAttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IEmailService;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
@@ -27,7 +27,7 @@ import javax.validation.Valid;
 public class EmailController {
 
   @Autowired private IEmailService emailService;
-  @Autowired private AttachmentCacheService attachmentCacheService;
+  @Autowired private IAttachmentCacheService attachmentCacheService;
 
   @PostMapping(
       value = "/send-email",

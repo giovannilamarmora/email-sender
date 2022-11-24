@@ -33,19 +33,28 @@ public class Dispatcher {
         emailSender.send(simpleMailMessage);
       } catch (MailException exception) {
         LOG.error("An error occurred during send email, message {}", exception.getMessage());
-        throw new UtilsException(EmailException.ERR_MAIL_SEND_002, exception.getMessage());
+        throw new UtilsException(
+            EmailException.ERR_MAIL_SEND_002,
+            "An error occurred during send email",
+            exception.getMessage());
       }
     } else {
       try {
         LOG.info("Sending email with Subject {}", mimeMessage.getSubject());
       } catch (MessagingException e) {
-        throw new UtilsException(EmailException.ERR_MAIL_SEND_002, e.getMessage());
+        throw new UtilsException(
+            EmailException.ERR_MAIL_SEND_002,
+            "An error occurred during send email",
+            e.getMessage());
       }
       try {
         emailSender.send(mimeMessage);
       } catch (MailException exception) {
         LOG.error("An error occurred during send email, message {}", exception.getMessage());
-        throw new UtilsException(EmailException.ERR_MAIL_SEND_002, exception.getMessage());
+        throw new UtilsException(
+            EmailException.ERR_MAIL_SEND_002,
+            "An error occurred during send email",
+            exception.getMessage());
       }
     }
   }

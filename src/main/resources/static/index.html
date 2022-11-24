@@ -36,101 +36,104 @@
 
 <body id="top">
 
-    <!-- preloader
-    ================================================== -->
-    <div id="preloader">
-        <div id="loader" class="dots-fade">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
+<!-- preloader
+================================================== -->
+<div id="preloader">
+    <div id="loader" class="dots-fade">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+
+<!-- site header
+================================================== -->
+<header class="s-header">
+
+    <div class="header-logo">
+        <a class="site-logo" href="index.html">
+            <img src="images/logo.svg" style="height: 100px" alt="Homepage">
+        </a>
     </div>
 
-    <!-- site header
-    ================================================== -->
-    <header class="s-header">
+    <div class="header-email">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+                    d="M0 12l11 3.1 7-8.1-8.156 5.672-4.312-1.202 15.362-7.68-3.974 14.57-3.75-3.339-2.17 2.925v-.769l-2-.56v7.383l4.473-6.031 4.527 4.031 6-22z"/>
+        </svg>
+        <a target="_blank" href="https://giovannilamarmoraproject.github.io/Portfolio">giovannilamarmora</a>
+    </div>
 
-        <div class="header-logo">
-            <a class="site-logo" href="index.html">
-                <img src="images/logo.svg" style="height: 100px" alt="Homepage">
-            </a>
-        </div>
+</header> <!-- end s-header -->
 
-        <div class="header-email">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                <path
-                    d="M0 12l11 3.1 7-8.1-8.156 5.672-4.312-1.202 15.362-7.68-3.974 14.57-3.75-3.339-2.17 2.925v-.769l-2-.56v7.383l4.473-6.031 4.527 4.031 6-22z" />
-            </svg>
-            <a href="https://giovannilamarmoraproject.github.io/Portfolio">giovannilamarmora</a>
-        </div>
+<!-- intro
+================================================== -->
+<section id="intro" class="s-intro s-intro--particles">
 
-    </header> <!-- end s-header -->
+    <div id="particles-js" class="intro-particles"></div>
 
-    <!-- intro
-    ================================================== -->
-    <section id="intro" class="s-intro s-intro--particles">
+    <div class="grid-overlay">
+        <div></div>
+    </div>
 
-        <div id="particles-js" class="intro-particles"></div>
+    <div class="row intro-content">
 
-        <div class="grid-overlay">
-            <div></div>
-        </div>
+        <div class="column">
 
-        <div class="row intro-content">
+            <div class="intro-content__text">
 
-            <div class="column">
-
-                <div class="intro-content__text">
-
-                    <h3>
-                        Email Sender
-                    </h3>
-                    <h1>
-                        The Email Sender System is currently implemented on <a
-                            href="https://giovannilamarmoraproject.github.io/Portfolio">Portfolio</a> <br>
-                        Here you can find the <a href="#" onclick="getSwagger()">Swagger API</a> <br>
-                    </h1>
+                <h3>
+                    Email Sender
+                </h3>
+                <h1>
+                    The Email Sender System is currently implemented on <a target="_blank"
+                                                                           href="https://giovannilamarmoraproject.github.io/Portfolio">Portfolio</a>
+                    <br>
+                    Here you can find the <a target="_blank" href="#" onclick="getSwagger()">Swagger API</a> <br>
+                </h1>
 
 
-                </div> <!-- end intro-content__text -->
+            </div> <!-- end intro-content__text -->
 
-            </div> <!-- end column -->
+        </div> <!-- end column -->
 
-        </div> <!--  end intro-content -->
+    </div> <!--  end intro-content -->
 
-        <script>
-            function getSwagger() {
-                return window.location.assign(window.location.origin + "/swagger-ui/index.html");
-            }
-        </script>
+    <script>
+        function getSwagger() {
+            return window.open(window.location.origin + "/swagger-ui/index.html");
+        }
+    </script>
 
 
+    <ul class="intro-social">
+        <li><a target="_blank" href="https://www.facebook.com/gio.lamarmora"><i class="fab fa-facebook"
+                                                                                aria-hidden="true"></i></a>
+        </li>
+        <li><a target="_blank" href="https://linktr.ee/giovannilamarmora"><i class="fab fa-twitter"
+                                                                             aria-hidden="true"></i></a></li>
+        <li><a target="_blank" href="https://www.instagram.com/gio_lamarmora/"><i class="fab fa-instagram"
+                                                                                  aria-hidden="true"></i></a></li>
+        <li><a target="_blank" href="https://www.linkedin.com/in/giovannilamarmora"><i class="fab fa-linkedin"
+                                                                                       aria-hidden="true"></i></a></li>
+        <li><a target="_blank" href="https://github.com/giovannilamarmora"><i class="fab fa-github"
+                                                                              aria-hidden="true"></i></a></li>
+    </ul> <!-- end intro social -->
 
-        <ul class="intro-social">
-            <li><a href="https://www.facebook.com/gio.lamarmora"><i class="fab fa-facebook" aria-hidden="true"></i></a>
-            </li>
-            <li><a href="https://linktr.ee/giovannilamarmora"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-            <li><a href="https://www.instagram.com/gio_lamarmora/"><i class="fab fa-instagram"
-                        aria-hidden="true"></i></a></li>
-            <li><a href="https://www.linkedin.com/in/giovannilamarmora"><i class="fab fa-linkedin"
-                        aria-hidden="true"></i></a></li>
-            <li><a href="https://github.com/giovannilamarmora"><i class="fab fa-github" aria-hidden="true"></i></a></li>
-        </ul> <!-- end intro social -->
+    <div class="intro-scroll">
+        <a href="#info" class="scroll-link smoothscroll">
+            Email Sender
+        </a>
+    </div> <!-- end intro scroll -->
 
-        <div class="intro-scroll">
-            <a href="#info" class="scroll-link smoothscroll">
-                Email Sender
-            </a>
-        </div> <!-- end intro scroll -->
+</section> <!-- end s-intro -->
 
-    </section> <!-- end s-intro -->
-
-    <!-- Java Script
-    ================================================== -->
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/particles.min.js"></script>
-    <script src="js/particle-settings.js"></script>
-    <script src="js/main.js"></script>
+<!-- Java Script
+================================================== -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/particles.min.js"></script>
+<script src="js/particle-settings.js"></script>
+<script src="js/main.js"></script>
 
 </body>

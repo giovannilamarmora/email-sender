@@ -76,7 +76,10 @@ public class EmailService implements IEmailService {
       LOG.error(
           "An error occurred during set data into MimeMessageHelper, error message {}",
           e.getMessage());
-      throw new UtilsException(EmailException.ERR_MAIL_SEND_002, e.getMessage());
+      throw new UtilsException(
+          EmailException.ERR_MAIL_SEND_002,
+          EmailException.ERR_MAIL_SEND_002.getMessage(),
+          e.getMessage());
     }
   }
 
