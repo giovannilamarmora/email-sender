@@ -82,7 +82,6 @@ public class EmailMapper {
     helper.setText(emailSenderDTO.getText());
     helper.setTo(emailSenderDTO.getTo());
 
-    // TODO: Need to be tested
     if (multipartFile != null && !multipartFile.isEmpty()) {
       AttachmentDTO attachmentDTO = fromPartToDto(multipartFile);
       helper.addAttachment(attachmentDTO.getFileName(), multipartFile);
@@ -104,7 +103,12 @@ public class EmailMapper {
           file.getBytes());
     } catch (IOException e) {
       LOG.error("Error on converting Attachment: {}", e.getMessage());
-      throw new UtilsException(EmailException.ERR_MAIL_SEND_001, e.getMessage());
+      throw new UtilsException(
+          EmailException.ERR_MAIL_SEND_001,
+          EmailException.ERR_MAIL_SEND_001.getMessage()
+              + " with filename: "
+              + file.getOriginalFilename(),
+          e.getMessage());
     }
   }
 
