@@ -111,6 +111,7 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
           service: "email-sender"
       #- uses: actions/checkout@v2
       #- uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
