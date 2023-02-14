@@ -104,25 +104,16 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: prod-email-sender
-      url: https://prod-email-sender.herokuapp.com
+      url: https://prod-email-sender.up.railway.app
     needs: [ java, build ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Update application.yaml
-        uses: fjogeleit/yaml-update-action@main
+      - uses: bervProject/railway-deploy@main
         with:
-          valueFile: './src/main/resources/application.yaml'
-          title: 'Version Updates '
-          changes: |
-            {
-              "spring.mail.username": "${{ secrets.SPRING_GOOGLE_EMAIL }}",
-              "spring.mail.password": "${{ secrets.SPRING_GOOGLE_TOKEN }}"
-            }
-          commitChange: false
-          updateFile: true
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku
-          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: "email-sender"
+      #- uses: actions/checkout@v2
+      #- uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      #  with:
+      #    heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #    heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku
+      #    heroku_email: ${{ secrets.HEROKU_EMAIL }}
