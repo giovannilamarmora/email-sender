@@ -107,12 +107,8 @@ jobs:
       url: https://prod-email-sender.up.railway.app
     needs: [ java, build ]
     steps:
-      - uses: bervProject/railway-deploy@main
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: "email-sender"
+      - name: Deploy
+        run: echo deploy on railway
       #- uses: actions/checkout@v2
       #- uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
       #  with:
