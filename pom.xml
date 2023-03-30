@@ -22,6 +22,8 @@
         <spring.doc.version>1.6.12</spring.doc.version>
         <spring.test.version>5.3.23</spring.test.version>
         <logtail.version>0.1.0</logtail.version>
+        <logback.version>1.2.11</logback.version>
+        <resteasy.version>3.11.3.Final</resteasy.version>
     </properties>
 
     <dependencies>
@@ -85,6 +87,16 @@
             <groupId>com.logtail</groupId>
             <artifactId>logback-logtail</artifactId>
             <version>${logtail.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>${resteasy.version}</version>
         </dependency>
     </dependencies>
 
