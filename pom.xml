@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.5</version>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -21,6 +21,7 @@
         <jakarta.version>2.0.2</jakarta.version>
         <spring.doc.version>1.6.12</spring.doc.version>
         <spring.test.version>5.3.23</spring.test.version>
+        <logtail.version>0.1.0</logtail.version>
     </properties>
 
     <dependencies>
@@ -79,6 +80,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.test.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.logtail</groupId>
+            <artifactId>logback-logtail</artifactId>
+            <version>${logtail.version}</version>
         </dependency>
     </dependencies>
 

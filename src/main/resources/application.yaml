@@ -10,3 +10,6 @@ spring:
           auth: true
           starttls:
             enable: true
+server:
+  servlet:
+    context-path: /email-sender
