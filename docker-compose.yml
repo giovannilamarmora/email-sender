@@ -9,6 +9,8 @@ services:
     environment:
       - GMAIL_EMAIL=${GMAIL_EMAIL}
       - GMAIL_TOKEN=${GMAIL_TOKEN}
+      - LOGTAIL_APP_NAME=${LOGTAIL_APP_NAME}
+      - LOGTAIL_LOGS=${LOGTAIL_LOGS}
 
     networks:
       docker-network:
