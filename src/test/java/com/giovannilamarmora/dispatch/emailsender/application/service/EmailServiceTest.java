@@ -23,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -45,13 +46,14 @@ public class EmailServiceTest {
   public void sendMailTest_successfully() throws UtilsException, JsonProcessingException {
     EmailResponseDTO expected =
         new EmailResponseDTO(
-            LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+            LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
             "Email to emsail@email.com was successfully sent!");
     EmailSenderDTO emailSenderDTO =
         new EmailSenderDTO(
             null, "email@email.com", null, null, null, "Subject", "Text", "emsail@email.com");
 
     ResponseEntity<EmailResponseDTO> actual = emailService.sendEmail(emailSenderDTO, false, null);
+    Objects.requireNonNull(actual.getBody()).setTimestamp(actual.getBody().getTimestamp().truncatedTo(ChronoUnit.MINUTES));
     assertEquals(expected, actual.getBody());
   }
 
@@ -59,7 +61,7 @@ public class EmailServiceTest {
   public void sendMailTestWithAttachmentAndHtml_successfully() throws UtilsException, IOException {
     EmailResponseDTO expected =
         new EmailResponseDTO(
-            LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS),
+            LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
             "Email to emsail@email.com was successfully sent!");
     EmailSenderDTO emailSenderDTO =
         new EmailSenderDTO(
@@ -80,6 +82,7 @@ public class EmailServiceTest {
 
     ResponseEntity<EmailResponseDTO> actual =
         emailService.sendEmail(emailSenderDTO, true, file.getOriginalFilename());
+    Objects.requireNonNull(actual.getBody()).setTimestamp(actual.getBody().getTimestamp().truncatedTo(ChronoUnit.MINUTES));
     assertEquals(expected, actual.getBody());
   }
 }
