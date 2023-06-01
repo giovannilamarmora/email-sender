@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  backend-service:
+    container_name: email-sender
+    image: ${DOCKER_REPOSITORY}:latest
+    hostname: email.sender
+    ports:
+      - "8003:8080"
+    environment:
+      - GMAIL_EMAIL=${GMAIL_EMAIL}
+      - GMAIL_TOKEN=${GMAIL_TOKEN}
+
+    networks:
+      docker-network:
+        aliases:
+          - email.sender
+
+networks:
+  docker-network:
+    external: true
