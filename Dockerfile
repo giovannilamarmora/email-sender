@@ -1,7 +1,11 @@
+FROM maven:3.8.2-jdk-11 AS build
+COPY . .
+RUN mvn clean package
+
 FROM openjdk:11
 EXPOSE 8080
 WORKDIR /
-COPY /target/email-sender.jar email-sender.jar
+COPY --from=build /target/email-sender.jar email-sender.jar
 
 #ARG DEPLOY
 #
