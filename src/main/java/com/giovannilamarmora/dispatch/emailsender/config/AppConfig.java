@@ -16,7 +16,7 @@ import java.util.Properties;
       "com.giovannilamarmora.dispatch.emailsender.*",
       "io.github.giovannilamarmora.utils"
     })
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = {"classpath:application.yaml"})
 public class AppConfig {
 
   @Value("${spring.mail.host}")

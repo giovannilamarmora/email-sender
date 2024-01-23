@@ -3,6 +3,7 @@ package com.giovannilamarmora.dispatch.emailsender.application.services;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
+import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
@@ -28,35 +29,35 @@ public class AttachmentCacheService implements IAttachmentCacheService {
 
   @Override
   @Cacheable(cacheNames = "attachment")
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
-  public ResponseEntity<AttachmentDTO> saveAttachmentDto(MultipartFile file) throws UtilsException {
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
+  public ResponseEntity<AttachmentDTO> saveAttachmentDto(MultipartFile file) throws EmailException {
     AttachmentDTO attachment;
     if (file == null || file.isEmpty()) {
       LOG.error("The file you have been passed is invalid");
-      throw new UtilsException(
-          EmailException.ERR_MAIL_SEND_003,
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_003,
           "The file you have been passed is invalid",
-          EmailException.ERR_MAIL_SEND_003.getMessage());
+          ExceptionMap.ERR_MAIL_SEND_003.getMessage());
     }
     try {
       attachment = mapper.fromPartToDto(file);
     } catch (UtilsException e) {
       LOG.error("Error on mapping attachment");
-      throw new UtilsException(
-          EmailException.ERR_MAIL_SEND_003, "Error on mapping attachment", e.getMessage());
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_003, "Error on mapping attachment", e.getMessage());
     }
     attachmentMap.put(attachment.getFileName(), attachment);
     return ResponseEntity.ok(attachment);
   }
 
   @Override
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public void removeAttachment(String filename) {
     attachmentMap.remove(filename);
   }
 
   @Override
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public AttachmentDTO getAttachment(String filename) {
     return attachmentMap.get(filename);
   }

@@ -1,6 +1,7 @@
 package com.giovannilamarmora.dispatch.emailsender.application;
 
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
+import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
@@ -24,17 +25,17 @@ public class Dispatcher {
 
   @Autowired public JavaMailSender emailSender;
 
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public void sendMessage(SimpleMailMessage simpleMailMessage, MimeMessage mimeMessage)
-      throws UtilsException {
+      throws EmailException {
     if (simpleMailMessage != null) {
       LOG.info("Sending email with Subject {}", simpleMailMessage.getSubject());
       try {
         emailSender.send(simpleMailMessage);
       } catch (MailException exception) {
         LOG.error("An error occurred during send email, message {}", exception.getMessage());
-        throw new UtilsException(
-            EmailException.ERR_MAIL_SEND_002,
+        throw new EmailException(
+            ExceptionMap.ERR_MAIL_SEND_002,
             "An error occurred during send email",
             exception.getMessage());
       }
@@ -42,17 +43,15 @@ public class Dispatcher {
       try {
         LOG.info("Sending email with Subject {}", mimeMessage.getSubject());
       } catch (MessagingException e) {
-        throw new UtilsException(
-            EmailException.ERR_MAIL_SEND_002,
-            "An error occurred during send email",
-            e.getMessage());
+        throw new EmailException(
+            ExceptionMap.ERR_MAIL_SEND_002, "An error occurred during send email", e.getMessage());
       }
       try {
         emailSender.send(mimeMessage);
       } catch (MailException exception) {
         LOG.error("An error occurred during send email, message {}", exception.getMessage());
-        throw new UtilsException(
-            EmailException.ERR_MAIL_SEND_002,
+        throw new EmailException(
+            ExceptionMap.ERR_MAIL_SEND_002,
             "An error occurred during send email",
             exception.getMessage());
       }

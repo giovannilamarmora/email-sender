@@ -6,6 +6,7 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IAttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IEmailService;
+import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
@@ -39,12 +40,12 @@ public class EmailController {
   @Operation(
       description = "API to send email from giovannilamarmora.working@gmail.com",
       tags = "Email Sender")
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_CONTROLLER)
+  @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
   public ResponseEntity<EmailResponseDTO> sendEmail(
       @RequestBody @Valid EmailSenderDTO emailSenderDTO,
       @RequestParam(required = false) Boolean htmlText,
       @RequestParam(required = false) String filename)
-      throws UtilsException, JsonProcessingException {
+      throws EmailException, JsonProcessingException {
     return emailService.sendEmail(emailSenderDTO, htmlText, filename);
   }
 
@@ -58,9 +59,9 @@ public class EmailController {
   @Operation(
       description = "API to upload the attachment before to send email",
       tags = "Upload Attachment")
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_CONTROLLER)
+  @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
   public ResponseEntity<AttachmentDTO> uploadAttachment(
-      @RequestPart(name = "file") MultipartFile file) throws UtilsException {
+      @RequestPart(name = "file") MultipartFile file) throws EmailException {
     return attachmentCacheService.saveAttachmentDto(file);
   }
 }
