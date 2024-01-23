@@ -8,6 +8,7 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
+import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
@@ -34,10 +35,10 @@ public class EmailService implements IEmailService {
   @Autowired private AttachmentCacheService attachmentCacheService;
 
   @Override
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_SERVICE)
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public ResponseEntity<EmailResponseDTO> sendEmail(
       EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename)
-      throws JsonProcessingException, UtilsException {
+      throws JsonProcessingException, EmailException {
     MultipartFile file = null;
     if (filename != null && !filename.isBlank()) {
       LOG.info("Building attachment with filename {}", filename);
@@ -58,7 +59,7 @@ public class EmailService implements IEmailService {
     return ResponseEntity.ok(responseDTO);
   }
 
-  private void sendSimpleMessage(EmailSenderDTO emailSenderDTO) throws UtilsException {
+  private void sendSimpleMessage(EmailSenderDTO emailSenderDTO) throws EmailException {
     SimpleMailMessage message = emailMapper.getSimpleMailMessage(emailSenderDTO);
 
     dispatcher.sendMessage(message, null);
@@ -66,7 +67,7 @@ public class EmailService implements IEmailService {
 
   private void sendMessageWithAttachmentOrHtml(
       EmailSenderDTO emailSenderDTO, MultipartFile multipartFile, Boolean htmlText)
-      throws UtilsException {
+      throws EmailException {
     try {
       MimeMessage message =
           emailMapper.getMimeMessageHelper(emailSenderDTO, htmlText, multipartFile);
@@ -76,9 +77,9 @@ public class EmailService implements IEmailService {
       LOG.error(
           "An error occurred during set data into MimeMessageHelper, error message {}",
           e.getMessage());
-      throw new UtilsException(
-          EmailException.ERR_MAIL_SEND_002,
-          EmailException.ERR_MAIL_SEND_002.getMessage(),
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_002,
+          ExceptionMap.ERR_MAIL_SEND_002.getMessage(),
           e.getMessage());
     }
   }

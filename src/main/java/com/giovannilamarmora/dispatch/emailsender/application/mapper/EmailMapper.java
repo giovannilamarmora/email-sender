@@ -3,6 +3,7 @@ package com.giovannilamarmora.dispatch.emailsender.application.mapper;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
+import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
@@ -25,7 +26,7 @@ public class EmailMapper {
 
   private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
   public SimpleMailMessage getSimpleMailMessage(EmailSenderDTO emailSenderDTO) {
     LOG.info("SimpleMailMessage Mapper");
     SimpleMailMessage message = new SimpleMailMessage();
@@ -50,10 +51,10 @@ public class EmailMapper {
     return message;
   }
 
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
   public MimeMessage getMimeMessageHelper(
       EmailSenderDTO emailSenderDTO, Boolean htmlText, MultipartFile multipartFile)
-      throws MessagingException, UtilsException {
+      throws MessagingException, EmailException {
     LOG.info("MimeMessageHelper Mapper");
     JavaMailSender sender = new JavaMailSenderImpl();
     MimeMessage message = sender.createMimeMessage();
@@ -92,8 +93,8 @@ public class EmailMapper {
     return message;
   }
 
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
-  public AttachmentDTO fromPartToDto(MultipartFile file) throws UtilsException {
+  @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
+  public AttachmentDTO fromPartToDto(MultipartFile file) throws EmailException {
     try {
       return new AttachmentDTO(
           file.getName(),
@@ -103,16 +104,16 @@ public class EmailMapper {
           file.getBytes());
     } catch (IOException e) {
       LOG.error("Error on converting Attachment: {}", e.getMessage());
-      throw new UtilsException(
-          EmailException.ERR_MAIL_SEND_001,
-          EmailException.ERR_MAIL_SEND_001.getMessage()
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_001,
+          ExceptionMap.ERR_MAIL_SEND_001.getMessage()
               + " with filename: "
               + file.getOriginalFilename(),
           e.getMessage());
     }
   }
 
-  @LogInterceptor(type = LogTimeTracker.ActionType.APP_MAPPER)
+  @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
   public MultipartFile fromDtoToPart(AttachmentDTO attachmentDTO) {
     MultipartFile file =
         new MockMultipartFile(

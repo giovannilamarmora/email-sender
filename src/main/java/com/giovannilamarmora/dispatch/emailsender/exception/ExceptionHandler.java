@@ -21,6 +21,6 @@ public class ExceptionHandler extends UtilsException {
         e.getMessage());
     HttpStatus status = HttpStatus.BAD_REQUEST;
     return new ResponseEntity<>(
-        getExceptionResponse(e, request, EmailException.ERR_MAIL_SEND_001, status), status);
+        getExceptionResponse(e, request, ExceptionMap.ERR_MAIL_SEND_001), status);
   }
 }

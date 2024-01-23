@@ -7,6 +7,7 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.services.AttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.EmailService;
+import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class EmailServiceTest {
   }
 
   @Test
-  public void sendMailTest_successfully() throws UtilsException, JsonProcessingException {
+  public void sendMailTest_successfully() throws EmailException, JsonProcessingException {
     EmailResponseDTO expected =
         new EmailResponseDTO(
             LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
@@ -58,7 +59,7 @@ public class EmailServiceTest {
   }
 
   @Test
-  public void sendMailTestWithAttachmentAndHtml_successfully() throws UtilsException, IOException {
+  public void sendMailTestWithAttachmentAndHtml_successfully() throws EmailException, IOException {
     EmailResponseDTO expected =
         new EmailResponseDTO(
             LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES),
