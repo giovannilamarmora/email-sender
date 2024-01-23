@@ -7,6 +7,7 @@ services:
     ports:
       - "8003:8080"
     environment:
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
       - GMAIL_EMAIL=${GMAIL_EMAIL}
       - GMAIL_TOKEN=${GMAIL_TOKEN}
       - LOGTAIL_APP_NAME=${LOGTAIL_APP_NAME}
