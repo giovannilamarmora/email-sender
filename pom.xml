@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.5</version>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -21,9 +21,6 @@
         <jakarta.version>2.0.2</jakarta.version>
         <spring.doc.version>1.6.12</spring.doc.version>
         <spring.test.version>5.3.23</spring.test.version>
-        <logtail.version>0.1.0</logtail.version>
-        <logback.version>1.2.11</logback.version>
-        <resteasy.version>3.11.3.Final</resteasy.version>
     </properties>
 
     <dependencies>
@@ -39,11 +36,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -52,11 +44,6 @@
             <groupId>io.github.giovannilamarmora.utils</groupId>
             <artifactId>utils-code</artifactId>
             <version>0.2.62</version>
-        </dependency>
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
-            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,29 +61,9 @@
             <version>${jakarta.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>${spring.doc.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
             <version>${spring.test.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.logtail</groupId>
-            <artifactId>logback-logtail</artifactId>
-            <version>${logtail.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>resteasy-client</artifactId>
-            <version>${resteasy.version}</version>
         </dependency>
     </dependencies>
 

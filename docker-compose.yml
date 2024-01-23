@@ -11,7 +11,8 @@ services:
       - GMAIL_TOKEN=${GMAIL_TOKEN}
       - LOGTAIL_APP_NAME=${LOGTAIL_APP_NAME}
       - LOGTAIL_LOGS=${LOGTAIL_LOGS}
-
+      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - SHOW_UTILS_EXCEPTION_STACKTRACE=${SHOW_UTILS_EXCEPTION_STACKTRACE}
     networks:
       docker-network:
         aliases:

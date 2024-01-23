@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: Email-Sender
+    starter-log: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${GMAIL_EMAIL}
+    password: ${GMAIL_TOKEN}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+server:
+  servlet:
+    context-path: /email-sender
+
+logging:
+  level:
+    com.giovannilamarmora.dispatch.emailsender: ${LOGGING_LEVEL}
+    io.github.giovannilamarmora.utils: ${LOGGING_LEVEL}
+    web: INFO
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+      hibernate: ERROR
+
+app:
+  exception:
+    stacktrace:
+      utilsException:
+        active: ${SHOW_UTILS_EXCEPTION_STACKTRACE}
+  cors:
+    enabled: true
+  logTail:
+    active: true
