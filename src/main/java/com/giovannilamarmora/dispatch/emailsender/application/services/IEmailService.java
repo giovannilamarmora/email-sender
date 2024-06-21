@@ -1,15 +1,20 @@
 package com.giovannilamarmora.dispatch.emailsender.application.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailRequestDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
-import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import io.github.giovannilamarmora.utils.exception.UtilsException;
 import org.springframework.http.ResponseEntity;
+import reactor.core.publisher.Mono;
 
 public interface IEmailService {
 
-  ResponseEntity<EmailResponseDTO> sendEmail(
-      EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename)
-      throws JsonProcessingException, EmailException;
+  Mono<ResponseEntity<EmailResponseDTO>> sendEmail(
+      EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename);
+
+  Mono<ResponseEntity<EmailResponseDTO>> sendEmailWithTemplate(
+      String templateId,
+      String locale,
+      String filename,
+      Boolean htmlText,
+      EmailRequestDTO emailRequestDTO);
 }

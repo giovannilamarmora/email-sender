@@ -2,26 +2,24 @@ package com.giovannilamarmora.dispatch.emailsender.application;
 
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
 import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
-import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
+import io.github.giovannilamarmora.utils.logger.LoggerFilter;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 @Component
 @Logged
 public class Dispatcher {
 
-  private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+  private final Logger LOG = LoggerFilter.getLogger(this.getClass());
 
   @Autowired public JavaMailSender emailSender;
 

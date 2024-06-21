@@ -1,25 +1,25 @@
 package com.giovannilamarmora.dispatch.emailsender.application;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
+import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailRequestDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IAttachmentCacheService;
 import com.giovannilamarmora.dispatch.emailsender.application.services.IEmailService;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Logged
 @RestController
@@ -41,12 +41,32 @@ public class EmailController {
       description = "API to send email from giovannilamarmora.working@gmail.com",
       tags = "Email Sender")
   @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
-  public ResponseEntity<EmailResponseDTO> sendEmail(
+  public Mono<ResponseEntity<EmailResponseDTO>> sendEmail(
       @RequestBody @Valid EmailSenderDTO emailSenderDTO,
       @RequestParam(required = false) Boolean htmlText,
-      @RequestParam(required = false) String filename)
-      throws EmailException, JsonProcessingException {
+      @RequestParam(required = false) String filename) {
     return emailService.sendEmail(emailSenderDTO, htmlText, filename);
+  }
+
+  @PostMapping(
+      value = "/send-email/{templateId}",
+      consumes = MediaType.APPLICATION_JSON_VALUE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  @Tag(
+      name = "Email Sender",
+      description = "API to send email from giovannilamarmora.working@gmail.com")
+  @Operation(
+      description = "API to send email from giovannilamarmora.working@gmail.com",
+      tags = "Email Sender")
+  @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
+  public Mono<ResponseEntity<EmailResponseDTO>> sendEmailWithTemplate(
+      @PathVariable(value = "templateId") String templateId,
+      @RequestParam(required = false, defaultValue = "en-GB") String locale,
+      @RequestBody @Valid EmailRequestDTO emailRequestDTO,
+      @RequestParam(required = false) Boolean htmlText,
+      @RequestParam(required = false) String filename) {
+    return emailService.sendEmailWithTemplate(
+        templateId, locale, filename, htmlText, emailRequestDTO);
   }
 
   @PostMapping(
@@ -60,8 +80,8 @@ public class EmailController {
       description = "API to upload the attachment before to send email",
       tags = "Upload Attachment")
   @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
-  public ResponseEntity<AttachmentDTO> uploadAttachment(
-      @RequestPart(name = "file") MultipartFile file) throws EmailException {
+  public Flux<AttachmentDTO> uploadAttachment(
+      @RequestPart(name = "file") Flux<FilePart> file) throws EmailException {
     return attachmentCacheService.saveAttachmentDto(file);
   }
 }

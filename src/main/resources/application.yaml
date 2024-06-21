@@ -1,3 +1,4 @@
+env: ${APP_ENV:Local} # Used for Google Cloud LOG
 spring:
   mail:
     host: smtp.gmail.com
@@ -12,4 +13,46 @@ spring:
             enable: true
 server:
   servlet:
-    context-path: /email-sender
+    context-path:
+
+app:
+  version: @project.version@ # Show Project Version
+  shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/img/*,*/favicon.ico"
+  exception:
+    stacktrace: true # Active StackTrace in Response
+  # Cors status
+  cors: # Disabled
+    enabled: false
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+
+filter:
+  requestResponse:
+    enabled: true
+    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/img/*,*/favicon.ico"
+
+logging:
+  config: classpath:logback-spring.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
+  level:
+    com.giovannilamarmora.dispatch.emailsender: DEBUG
+    io.github.giovannilamarmora.utils: DEBUG
+    web: INFO
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+      hibernate: ERROR
+
+rest:
+  client:
+    strapi:
+      active: true
+      baseUrl: https://strapi.giovannilamarmora.com
+      bearer: ${STRAPI_AUTH_TOKEN}
+      path:
+        getTemplate: /api/email-templates
