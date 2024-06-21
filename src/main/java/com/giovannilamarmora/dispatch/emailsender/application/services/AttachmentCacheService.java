@@ -8,29 +8,31 @@ import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
+import io.github.giovannilamarmora.utils.logger.LoggerFilter;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
-import java.util.Map;
+import reactor.core.publisher.Flux;
 
 @Service
 @Logged
 public class AttachmentCacheService implements IAttachmentCacheService {
 
-  private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+  private final Logger LOG = LoggerFilter.getLogger(this.getClass());
   public static Map<String, AttachmentDTO> attachmentMap = new HashMap<>();
   @Autowired private EmailMapper mapper;
 
-  @Override
+  @Deprecated
   @Cacheable(cacheNames = "attachment")
   @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
-  public ResponseEntity<AttachmentDTO> saveAttachmentDto(MultipartFile file) throws EmailException {
+  public ResponseEntity<AttachmentDTO> saveAttachmentDtoOld(MultipartFile file)
+      throws EmailException {
     AttachmentDTO attachment;
     if (file == null || file.isEmpty()) {
       LOG.error("The file you have been passed is invalid");
@@ -48,6 +50,33 @@ public class AttachmentCacheService implements IAttachmentCacheService {
     }
     attachmentMap.put(attachment.getFileName(), attachment);
     return ResponseEntity.ok(attachment);
+  }
+
+  @Override
+  @Cacheable(cacheNames = "attachment")
+  @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
+  public Flux<AttachmentDTO> saveAttachmentDto(Flux<FilePart> file) {
+    Flux<AttachmentDTO> attachment;
+    if (file == null) {
+      LOG.error("The file you have been passed is invalid");
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_003,
+          "The file you have been passed is invalid",
+          ExceptionMap.ERR_MAIL_SEND_003.getMessage());
+    }
+
+    try {
+      attachment = EmailMapper.fromPartToDto(file);
+    } catch (UtilsException e) {
+      LOG.error("Error on mapping attachment");
+      throw new EmailException(
+          ExceptionMap.ERR_MAIL_SEND_003, "Error on mapping attachment", e.getMessage());
+    }
+    return attachment.map(
+        attachmentDTO -> {
+          attachmentMap.put(attachmentDTO.getFileName(), attachmentDTO);
+          return attachmentDTO;
+        });
   }
 
   @Override

@@ -10,3 +10,12 @@ spring:
           auth: true
           starttls:
             enable: true
+
+rest:
+  client:
+    strapi:
+      active: true
+      baseUrl: https://strapi.giovannilamarmora.com
+      bearer: token
+      path:
+        getTemplate: /api/email-templates
