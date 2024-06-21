@@ -34,7 +34,7 @@ springdoc:
 filter:
   requestResponse:
     enabled: true
-    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/img/*,*/favicon.ico"
+    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/images/*,*/favicon.ico"
 
 logging:
   config: classpath:logback-spring.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
