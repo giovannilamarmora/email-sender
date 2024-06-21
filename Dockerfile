@@ -1,10 +1,11 @@
-FROM maven:3.8.2-jdk-11 AS build
+FROM maven:3.9.7-eclipse-temurin-22 AS build
 COPY . .
-RUN mvn clean package
+RUN mvn clean package -DGCLOUD_PROJECT=access-sphere
 
-FROM openjdk:11
+FROM eclipse-temurin:22-jdk
 EXPOSE 8080
 WORKDIR /
+COPY src/main/resources /app/resources
 COPY --from=build /target/email-sender.jar email-sender.jar
 
 #ARG DEPLOY
