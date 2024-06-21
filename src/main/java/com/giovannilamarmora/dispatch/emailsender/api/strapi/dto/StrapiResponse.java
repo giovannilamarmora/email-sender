@@ -16,7 +16,6 @@ public class StrapiResponse {
   private List<StrapiData> data;
   private String jwt;
   private String refresh_token;
-  private StrapiUser user;
 
   @Builder
   @Data
@@ -25,7 +24,7 @@ public class StrapiResponse {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   public static class StrapiData {
     private String id;
-    
+
     private Object attributes;
   }
 
