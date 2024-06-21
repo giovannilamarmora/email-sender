@@ -2,6 +2,7 @@ package com.giovannilamarmora.dispatch.emailsender.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Paths;
 import java.util.Map;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -15,7 +16,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @EnableCaching
-@OpenAPIDefinition(info = @Info(title = "Email Sender Swagger", version = "1.0.0"))
+@OpenAPIDefinition(
+    info = @Info(title = "Email Sender Swagger", version = "1.0.0"),
+    servers = {
+      @Server(
+          url = "https://email-sender.giovannilamarmora.com",
+          description = "Default Server URL"),
+      @Server(url = "http://localhost:8080", description = "Local Server URL")
+    })
 public class OpenAPIConfig {
 
   @Bean
