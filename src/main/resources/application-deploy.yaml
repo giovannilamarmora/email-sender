@@ -16,10 +16,10 @@ spring:
             enable: true
 server:
   servlet:
-    context-path: /email-sender
+    context-path:
 
 logging:
-  config: classpath:logback-spring.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
+  config: classpath:logback-google.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
   level:
     com.giovannilamarmora.dispatch.emailsender: ${LOGGING_LEVEL}
     io.github.giovannilamarmora.utils: ${LOGGING_LEVEL}
