@@ -20,7 +20,7 @@ server:
 
 app:
   version: @project.version@ # Show Project Version
-  shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/images/*,*/favicon.ico"
+  shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*/css/*,*/js/*,*/images/*,*/favicon.ico,/index.html"
   exception:
     stacktrace: true # Active StackTrace in Response
   # Cors status
@@ -37,7 +37,7 @@ springdoc:
 filter:
   requestResponse:
     enabled: true
-    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*.css,*.js,*/images/*,*/favicon.ico,/index.html"
+    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*/css/*,*/js/*,*/images/*,*/favicon.ico,/index.html"
 
 logging:
   config: classpath:logback-spring.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
