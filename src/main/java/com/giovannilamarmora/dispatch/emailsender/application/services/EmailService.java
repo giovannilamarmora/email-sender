@@ -38,6 +38,7 @@ public class EmailService implements IEmailService {
   @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public Mono<ResponseEntity<EmailResponseDTO>> sendEmail(
       EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename) {
+    LOG.info("\uD83D\uDE80 Starting /send-email, to={}", emailSenderDTO.getTo());
     List<MultipartFile> file = new ArrayList<>();
     if (filename != null && !filename.isBlank()) {
       LOG.info("Building attachment with filename {}", filename);
@@ -67,7 +68,10 @@ public class EmailService implements IEmailService {
     EmailResponseDTO responseDTO = new EmailResponseDTO();
     responseDTO.setMessage(
         String.format("Email to %s was successfully sent!", emailSenderDTO.getTo()));
-    return Mono.just(ResponseEntity.ok(responseDTO));
+    return Mono.just(ResponseEntity.ok(responseDTO))
+        .doOnSuccess(
+            emailResponseDTOResponseEntity ->
+                LOG.info("\uD83D\uDE80 Ending /send-email, to={}", emailSenderDTO.getTo()));
   }
 
   @Override
@@ -78,6 +82,11 @@ public class EmailService implements IEmailService {
       String filename,
       Boolean htmlText,
       EmailRequestDTO emailRequestDTO) {
+    LOG.info(
+        "\uD83D\uDE80 Starting /send-email/{} with locale={}, to={}",
+        templateId,
+        locale,
+        emailRequestDTO.getTo());
     return strapiService
         .getTemplateById(templateId, locale)
         .flatMap(
@@ -109,7 +118,14 @@ public class EmailService implements IEmailService {
                               "Invalid Data Provided");
                         }
                         return Mono.just(emailResponseResponseEntity);
-                      });
+                      })
+                  .doOnSuccess(
+                      emailResponseDTOResponseEntity ->
+                          LOG.info(
+                              "\uD83D\uDE80 Ending /send-email/{} with locale={}, to={}",
+                              templateId,
+                              locale,
+                              emailRequestDTO.getTo()));
             });
   }
 
