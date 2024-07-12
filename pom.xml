@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.8</version>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>io.github.giovannilamarmora.utils</groupId>
             <artifactId>utils-code</artifactId>
-            <version>1.0.21</version>
+            <version>1.0.23</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
