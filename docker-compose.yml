@@ -24,7 +24,7 @@ services:
           - email.sender
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.email-sender.rule=Host(`email-sender.giovannilamarmora.com/`)"
+      - "traefik.http.routers.email-sender.rule=Host(`email-sender.giovannilamarmora.com`)"
       - "traefik.http.services.email-sender.loadbalancer.server.port=8080"
       - "traefik.http.routers.email-sender.middlewares=cloudflarewarp@file,geoblock@file"
 
