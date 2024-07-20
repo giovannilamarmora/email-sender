@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  backend-service:
+  email-sender:
     container_name: email-sender
     image: ${DOCKER_REPOSITORY}:latest
     hostname: email.sender
@@ -22,6 +22,11 @@ services:
       docker-network:
         aliases:
           - email.sender
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.email-sender.rule=Host(`email-sender.giovannilamarmora.com/`)"
+      - "traefik.http.services.email-sender.loadbalancer.server.port=8080"
+      - "traefik.http.routers.email-sender.middlewares=cloudflarewarp@file,geoblock@file"
 
 networks:
   docker-network:
