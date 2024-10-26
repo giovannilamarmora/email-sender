@@ -2,7 +2,7 @@ package com.giovannilamarmora.dispatch.emailsender.api.strapi;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.giovannilamarmora.dispatch.emailsender.api.strapi.dto.StrapiEmailTemplate;
-import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
+import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
