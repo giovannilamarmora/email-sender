@@ -1,7 +1,7 @@
 package com.giovannilamarmora.dispatch.emailsender.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,21 +14,37 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EmailSenderDTO {
 
+  @Pattern(
+      regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      message = "Email format is invalid. Please enter a valid email address.")
   private String bbc;
+
+  @Pattern(
+      regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      message = "Email format is invalid. Please enter a valid email address.")
   private String cc;
+
+  @Pattern(
+      regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      message = "Email format is invalid. Please enter a valid email address.")
   private String from;
+
+  @Pattern(
+      regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      message = "Email format is invalid. Please enter a valid email address.")
   private String replyTo;
+
   private Date sentDate;
 
-  @NotNull(message = "Subject cannot be null")
-  @NotBlank(message = "Subject cannot be blank")
+  @NotBlank(message = "Subject cannot be null or blank")
   private String subject;
 
-  @NotNull(message = "Text cannot be null")
-  @NotBlank(message = "Text cannot be blank")
+  @NotBlank(message = "Text cannot be null or blank")
   private String text;
 
-  @NotNull(message = "Email Destination cannot be null")
-  @NotBlank(message = "Email Destination cannot be blank")
+  @Pattern(
+      regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$",
+      message = "Email format is invalid. Please enter a valid email address.")
+  @NotBlank(message = "Email Destination cannot be null or blank")
   private String to;
 }

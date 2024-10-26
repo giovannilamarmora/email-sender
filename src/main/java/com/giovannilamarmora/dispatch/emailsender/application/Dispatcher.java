@@ -1,7 +1,7 @@
 package com.giovannilamarmora.dispatch.emailsender.application;
 
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
+import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;

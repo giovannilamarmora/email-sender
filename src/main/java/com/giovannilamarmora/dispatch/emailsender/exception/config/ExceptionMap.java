@@ -1,9 +1,14 @@
-package com.giovannilamarmora.dispatch.emailsender.exception;
+package com.giovannilamarmora.dispatch.emailsender.exception.config;
 
 import io.github.giovannilamarmora.utils.exception.ExceptionCode;
 import org.springframework.http.HttpStatus;
 
 public enum ExceptionMap implements ExceptionCode {
+  /**
+   * @Validation Exception Map for Validation Input
+   */
+  ERR_VALID_MAIL_001(
+      "VALIDATION_ERROR", HttpStatus.BAD_REQUEST, "Required input are null or Empty"),
   ERR_MAIL_SEND_001(
       "ERROR-DESERIALIZE-EXCEPTION", HttpStatus.BAD_REQUEST, "Error on deserializing object"),
   ERR_MAIL_SEND_002(

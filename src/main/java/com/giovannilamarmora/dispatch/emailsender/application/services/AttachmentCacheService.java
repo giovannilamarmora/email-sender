@@ -3,7 +3,7 @@ package com.giovannilamarmora.dispatch.emailsender.application.services;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
+import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.exception.UtilsException;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;

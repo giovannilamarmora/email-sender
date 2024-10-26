@@ -8,11 +8,12 @@ import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailResponseD
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.mapper.EmailMapper;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
-import com.giovannilamarmora.dispatch.emailsender.exception.ExceptionMap;
+import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
+import io.github.giovannilamarmora.utils.utilities.Mapper;
 import io.github.giovannilamarmora.utils.utilities.Utilities;
 import jakarta.mail.internet.MimeMessage;
 import java.util.*;
@@ -58,11 +59,11 @@ public class EmailService implements IEmailService {
       }
     }
 
-    LOG.info("Building Message with Data {}", Utilities.convertObjectToJson(emailSenderDTO));
+    LOG.info("Building Message with Data {}", Mapper.writeObjectToString(emailSenderDTO));
     if ((htmlText == null || !htmlText) && (file == null || file.isEmpty())) {
       sendSimpleMessage(emailSenderDTO);
     }
-    if (file != null || htmlText != null) {
+    if (!Utilities.isNullOrEmpty(file) || !Utilities.isNullOrEmpty(htmlText)) {
       sendMessageWithAttachmentOrHtml(emailSenderDTO, file, htmlText);
     }
     EmailResponseDTO responseDTO = new EmailResponseDTO();
