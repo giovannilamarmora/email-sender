@@ -11,6 +11,7 @@ import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +44,14 @@ public class EmailController {
   @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
   public Mono<ResponseEntity<EmailResponseDTO>> sendEmail(
       @RequestBody @Valid EmailSenderDTO emailSenderDTO,
-      @RequestParam(required = false) Boolean htmlText,
-      @RequestParam(required = false) String filename) {
+      @RequestParam(required = false)
+          @Schema(
+              description = "Param used to choose if the email has a HTML template",
+              example = "true")
+          Boolean htmlText,
+      @RequestParam(required = false)
+          @Schema(description = "Param used to select the attachment file", example = "image.png")
+          String filename) {
     return emailService.sendEmail(emailSenderDTO, htmlText, filename);
   }
 
@@ -63,8 +70,14 @@ public class EmailController {
       @PathVariable(value = "templateId") String templateId,
       @RequestParam(required = false, defaultValue = "en-GB") String locale,
       @RequestBody @Valid EmailRequestDTO emailRequestDTO,
-      @RequestParam(required = false) Boolean htmlText,
-      @RequestParam(required = false) String filename) {
+      @RequestParam(required = false)
+          @Schema(
+              description = "Param used to choose if the email has a HTML template",
+              example = "true")
+          Boolean htmlText,
+      @RequestParam(required = false)
+          @Schema(description = "Param used to select the attachment file", example = "image.png")
+          String filename) {
     return emailService.sendEmailWithTemplate(
         templateId, locale, filename, htmlText, emailRequestDTO);
   }
@@ -80,8 +93,8 @@ public class EmailController {
       description = "API to upload the attachment before to send email",
       tags = "Upload Attachment")
   @LogInterceptor(type = LogTimeTracker.ActionType.CONTROLLER)
-  public Flux<AttachmentDTO> uploadAttachment(
-      @RequestPart(name = "file") Flux<FilePart> file) throws EmailException {
+  public Flux<AttachmentDTO> uploadAttachment(@RequestPart(name = "file") Flux<FilePart> file)
+      throws EmailException {
     return attachmentCacheService.saveAttachmentDto(file);
   }
 }

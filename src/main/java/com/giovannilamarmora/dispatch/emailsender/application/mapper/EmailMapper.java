@@ -1,17 +1,21 @@
 package com.giovannilamarmora.dispatch.emailsender.application.mapper;
 
+import com.giovannilamarmora.dispatch.emailsender.api.strapi.dto.StrapiEmailTemplate;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.AttachmentDTO;
+import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailRequestDTO;
 import com.giovannilamarmora.dispatch.emailsender.application.dto.EmailSenderDTO;
 import com.giovannilamarmora.dispatch.emailsender.exception.EmailException;
 import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
+import io.github.giovannilamarmora.utils.utilities.Utilities;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.slf4j.Logger;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -30,6 +34,37 @@ import reactor.core.publisher.Mono;
 public class EmailMapper {
 
   private static final Logger LOG = LoggerFilter.getLogger(EmailMapper.class);
+
+  @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
+  public static EmailSenderDTO mapEmailSenderDTO(
+      EmailRequestDTO emailRequestDTO, StrapiEmailTemplate strapiEmailTemplate) {
+    EmailSenderDTO emailSenderDTO = new EmailSenderDTO();
+    if (!Utilities.isNullOrEmpty(emailRequestDTO.getBbc())) {
+      emailSenderDTO.setBbc(emailRequestDTO.getBbc());
+    }
+    if (!Utilities.isNullOrEmpty(emailRequestDTO.getCc())) {
+      emailSenderDTO.setCc(emailRequestDTO.getCc());
+    }
+    if (!Utilities.isNullOrEmpty(emailRequestDTO.getFrom())) {
+      emailSenderDTO.setFrom(emailRequestDTO.getFrom());
+    }
+    if (!Utilities.isNullOrEmpty(emailRequestDTO.getReplyTo())) {
+      emailSenderDTO.setReplyTo(emailRequestDTO.getReplyTo());
+    }
+    emailSenderDTO.setSentDate(new Date());
+    emailSenderDTO.setSubject(strapiEmailTemplate.getSubject());
+    emailSenderDTO.setTo(emailRequestDTO.getTo());
+
+    String template = strapiEmailTemplate.getTemplate();
+    Map<String, String> finalParam =
+        Utilities.getFinalMapFromValue(
+            emailRequestDTO.getParams(), strapiEmailTemplate.getParams());
+    for (String key : finalParam.keySet()) {
+      template = template.replace("{{" + key + "}}", finalParam.get(key));
+    }
+    emailSenderDTO.setText(template);
+    return emailSenderDTO;
+  }
 
   @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
   public static SimpleMailMessage getSimpleMailMessage(EmailSenderDTO emailSenderDTO) {
@@ -145,7 +180,6 @@ public class EmailMapper {
 
   @LogInterceptor(type = LogTimeTracker.ActionType.MAPPER)
   public static Flux<AttachmentDTO> fromPartToDto(Flux<FilePart> files) throws EmailException {
-    List<AttachmentDTO> attachmentDTOS = new ArrayList<>();
     AtomicReference<Integer> size = new AtomicReference<>();
     return files.flatMap(
         file -> {

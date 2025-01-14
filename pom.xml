@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.5</version>
+        <version>3.4.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.giovannilamarmora.dispatch</groupId>
     <artifactId>email-sender</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.15</version>
     <name>email-sender</name>
     <description>Demo project for Spring Boot</description>
     <properties>
@@ -39,12 +39,12 @@
         <dependency>
             <groupId>io.github.giovannilamarmora.utils</groupId>
             <artifactId>utils-code</artifactId>
-            <version>1.0.40</version>
+            <version>1.0.48</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-            <version>3.3.1</version>
+            <version>3.4.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
