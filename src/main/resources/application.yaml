@@ -1,10 +1,14 @@
 env: ${APP_ENV:Local} # Used for Google Cloud LOG
 spring:
+  application:
+    name: Email-Sender
+    starter-log: true
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${GMAIL_EMAIL}
-    password: ${GMAIL_TOKEN}
+    username: ${SERVER_EMAIL}
+    password: ${SERVER_TOKEN}
+    sender-emails: ${SENDER_EMAILS}
     properties:
       mail:
         smtp:

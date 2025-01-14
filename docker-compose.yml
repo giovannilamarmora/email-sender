@@ -8,11 +8,10 @@ services:
       - "8003:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
-      - GMAIL_EMAIL=${GMAIL_EMAIL}
-      - GMAIL_TOKEN=${GMAIL_TOKEN}
-      - LOGTAIL_APP_NAME=${LOGTAIL_APP_NAME}
-      - LOGTAIL_LOGS=${LOGTAIL_LOGS}
-      - LOGGING_LEVEL=${LOGGING_LEVEL}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SERVER_EMAIL=${SERVER_EMAIL}
+      - SERVER_TOKEN=${SERVER_TOKEN}
       - SHOW_UTILS_EXCEPTION_STACKTRACE=${SHOW_UTILS_EXCEPTION_STACKTRACE}
       - GCLOUD_PROJECT=${GCLOUD_PROJECT}
       - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
@@ -22,11 +21,6 @@ services:
       docker-network:
         aliases:
           - email.sender
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.email-sender.rule=Host(`email-sender.giovannilamarmora.com`)"
-      - "traefik.http.services.email-sender.loadbalancer.server.port=8080"
-      - "traefik.http.routers.email-sender.middlewares=cloudflarewarp@file,geoblock@file"
 
 networks:
   docker-network:

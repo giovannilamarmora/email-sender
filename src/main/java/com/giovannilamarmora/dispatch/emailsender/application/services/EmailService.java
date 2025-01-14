@@ -39,7 +39,10 @@ public class EmailService implements IEmailService {
   @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public Mono<ResponseEntity<EmailResponseDTO>> sendEmail(
       EmailSenderDTO emailSenderDTO, Boolean htmlText, String filename) {
-    LOG.info("\uD83D\uDE80 Starting /send-email, to={}", emailSenderDTO.getTo());
+    LOG.info(
+        "\uD83D\uDE80 Starting /send-email, to={} from={}",
+        emailSenderDTO.getTo(),
+        emailSenderDTO.getFrom());
     List<MultipartFile> file = new ArrayList<>();
     if (filename != null && !filename.isBlank()) {
       LOG.info("Building attachment with filename {}", filename);
@@ -60,7 +63,7 @@ public class EmailService implements IEmailService {
     }
 
     LOG.info("Building Message with Data {}", Mapper.writeObjectToString(emailSenderDTO));
-    if ((htmlText == null || !htmlText) && (file == null || file.isEmpty())) {
+    if (Utilities.isNullOrEmpty(htmlText) && Utilities.isNullOrEmpty(file)) {
       sendSimpleMessage(emailSenderDTO);
     }
     if (!Utilities.isNullOrEmpty(file) || !Utilities.isNullOrEmpty(htmlText)) {
@@ -84,15 +87,16 @@ public class EmailService implements IEmailService {
       Boolean htmlText,
       EmailRequestDTO emailRequestDTO) {
     LOG.info(
-        "\uD83D\uDE80 Starting /send-email/{} with locale={}, to={}",
+        "\uD83D\uDE80 Starting /send-email/{} with locale={}, to={}, from={}",
         templateId,
         locale,
-        emailRequestDTO.getTo());
+        emailRequestDTO.getTo(),
+        emailRequestDTO.getFrom());
     return strapiService
         .getTemplateById(templateId, locale)
         .flatMap(
             strapiEmailTemplate -> {
-              EmailSenderDTO emailContent =
+              /*EmailSenderDTO emailContent =
                   EmailSenderDTO.builder()
                       .subject(strapiEmailTemplate.getSubject())
                       .to(emailRequestDTO.getTo())
@@ -107,7 +111,9 @@ public class EmailService implements IEmailService {
                 template = template.replace("{{" + key + "}}", finalParam.get(key));
               }
 
-              emailContent.setText(template);
+              emailContent.setText(template);*/
+              EmailSenderDTO emailContent =
+                  EmailMapper.mapEmailSenderDTO(emailRequestDTO, strapiEmailTemplate);
               return sendEmail(emailContent, htmlText, filename)
                   .flatMap(
                       emailResponseResponseEntity -> {
@@ -130,7 +136,7 @@ public class EmailService implements IEmailService {
             });
   }
 
-  private void sendSimpleMessage(EmailSenderDTO emailSenderDTO) throws EmailException {
+  private void sendSimpleMessage(EmailSenderDTO emailSenderDTO) {
     SimpleMailMessage message = EmailMapper.getSimpleMailMessage(emailSenderDTO);
 
     dispatcher.sendMessage(message, null);
