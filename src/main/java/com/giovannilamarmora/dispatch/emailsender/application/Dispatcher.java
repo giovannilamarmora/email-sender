@@ -31,11 +31,8 @@ public class Dispatcher {
 
   @LogInterceptor(type = LogTimeTracker.ActionType.SERVICE)
   public void sendMessage(SimpleMailMessage simpleMailMessage, MimeMessage mimeMessage) {
+    validateEmails(simpleMailMessage, mimeMessage);
     if (simpleMailMessage != null) {
-      validateEmails(
-          Utilities.isNullOrEmpty(simpleMailMessage.getFrom())
-              ? senderEmails.getFirst()
-              : simpleMailMessage.getFrom());
       LOG.info("Sending email with Subject {}", simpleMailMessage.getSubject());
       try {
         emailSender.send(simpleMailMessage);
@@ -48,11 +45,6 @@ public class Dispatcher {
       }
     } else {
       try {
-        validateEmails(
-            Utilities.isNullOrEmpty(mimeMessage.getFrom())
-                    || Utilities.isNullOrEmpty(mimeMessage.getFrom()[0])
-                ? senderEmails.getFirst()
-                : mimeMessage.getFrom()[0].toString());
         LOG.info("Sending email with Subject {}", mimeMessage.getSubject());
       } catch (MessagingException e) {
         throw new EmailException(
@@ -70,7 +62,27 @@ public class Dispatcher {
     }
   }
 
-  private void validateEmails(String email_from) {
+  private void validateEmails(SimpleMailMessage simpleMailMessage, MimeMessage mimeMessage) {
+    String email_from;
+    if (!Utilities.isNullOrEmpty(simpleMailMessage)) {
+      email_from =
+          Utilities.isNullOrEmpty(simpleMailMessage.getFrom())
+              ? senderEmails.getFirst()
+              : simpleMailMessage.getFrom();
+      simpleMailMessage.setFrom(email_from);
+    } else {
+      try {
+        email_from =
+            Utilities.isNullOrEmpty(mimeMessage.getFrom())
+                    || Utilities.isNullOrEmpty(mimeMessage.getFrom()[0])
+                ? senderEmails.getFirst()
+                : mimeMessage.getFrom()[0].toString();
+        mimeMessage.setFrom(email_from);
+      } catch (MessagingException e) {
+        throw new EmailException(
+            ExceptionMap.ERR_MAIL_SEND_002, "An error occurred during send email", e.getMessage());
+      }
+    }
     if (!senderEmails.contains(email_from)) {
       LOG.error(
           "The email {} not match the sender email configuration {}", email_from, senderEmails);
