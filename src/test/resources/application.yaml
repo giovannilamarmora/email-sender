@@ -4,6 +4,7 @@ spring:
     port: 587
     username: email@email.com
     password: token-id
+    sender-emails: email@email.com
     properties:
       mail:
         smtp:
