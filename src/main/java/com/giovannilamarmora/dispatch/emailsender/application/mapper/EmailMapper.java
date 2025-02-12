@@ -9,7 +9,7 @@ import com.giovannilamarmora.dispatch.emailsender.exception.config.ExceptionMap;
 import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
-import io.github.giovannilamarmora.utils.utilities.Utilities;
+import io.github.giovannilamarmora.utils.utilities.ObjectToolkit;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
@@ -39,16 +39,16 @@ public class EmailMapper {
   public static EmailSenderDTO mapEmailSenderDTO(
       EmailRequestDTO emailRequestDTO, StrapiEmailTemplate strapiEmailTemplate) {
     EmailSenderDTO emailSenderDTO = new EmailSenderDTO();
-    if (!Utilities.isNullOrEmpty(emailRequestDTO.getBbc())) {
+    if (!ObjectToolkit.isNullOrEmpty(emailRequestDTO.getBbc())) {
       emailSenderDTO.setBbc(emailRequestDTO.getBbc());
     }
-    if (!Utilities.isNullOrEmpty(emailRequestDTO.getCc())) {
+    if (!ObjectToolkit.isNullOrEmpty(emailRequestDTO.getCc())) {
       emailSenderDTO.setCc(emailRequestDTO.getCc());
     }
-    if (!Utilities.isNullOrEmpty(emailRequestDTO.getFrom())) {
+    if (!ObjectToolkit.isNullOrEmpty(emailRequestDTO.getFrom())) {
       emailSenderDTO.setFrom(emailRequestDTO.getFrom());
     }
-    if (!Utilities.isNullOrEmpty(emailRequestDTO.getReplyTo())) {
+    if (!ObjectToolkit.isNullOrEmpty(emailRequestDTO.getReplyTo())) {
       emailSenderDTO.setReplyTo(emailRequestDTO.getReplyTo());
     }
     emailSenderDTO.setSentDate(new Date());
@@ -57,7 +57,7 @@ public class EmailMapper {
 
     String template = strapiEmailTemplate.getTemplate();
     Map<String, String> finalParam =
-        Utilities.getFinalMapFromValue(
+        ObjectToolkit.getFinalMapFromValue(
             emailRequestDTO.getParams(), strapiEmailTemplate.getParams());
     for (String key : finalParam.keySet()) {
       template = template.replace("{{" + key + "}}", finalParam.get(key));

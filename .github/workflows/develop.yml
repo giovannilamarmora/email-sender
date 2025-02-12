@@ -29,7 +29,7 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - name: Set up JDK and Maven
         id: setup
-        uses: actions/setup-java@v4.6.0
+        uses: actions/setup-java@v4.7.0
         with:
           java-version: '22'
           distribution: 'corretto'
@@ -44,7 +44,7 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - name: Set up JDK and Maven
         id: setup
-        uses: actions/setup-java@v4.6.0
+        uses: actions/setup-java@v4.7.0
         with:
           java-version: '22'
           distribution: 'corretto'
@@ -75,7 +75,7 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - name: Set up JDK and Maven
         id: setup
-        uses: actions/setup-java@v4.6.0
+        uses: actions/setup-java@v4.7.0
         with:
           java-version: '22'
           distribution: 'corretto'
@@ -98,7 +98,7 @@ jobs:
       - uses: actions/checkout@v4.2.2
       - name: Set up JDK and Maven
         id: setup
-        uses: actions/setup-java@v4.6.0
+        uses: actions/setup-java@v4.7.0
         with:
           java-version: '22'
           distribution: 'corretto'

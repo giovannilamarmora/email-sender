@@ -14,7 +14,7 @@ import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
 import io.github.giovannilamarmora.utils.utilities.Mapper;
-import io.github.giovannilamarmora.utils.utilities.Utilities;
+import io.github.giovannilamarmora.utils.utilities.ObjectToolkit;
 import jakarta.mail.internet.MimeMessage;
 import java.util.*;
 import org.slf4j.Logger;
@@ -63,10 +63,10 @@ public class EmailService implements IEmailService {
     }
 
     LOG.info("Building Message with Data {}", Mapper.writeObjectToString(emailSenderDTO));
-    if (Utilities.isNullOrEmpty(htmlText) && Utilities.isNullOrEmpty(file)) {
+    if (ObjectToolkit.isNullOrEmpty(htmlText) && ObjectToolkit.isNullOrEmpty(file)) {
       sendSimpleMessage(emailSenderDTO);
     }
-    if (!Utilities.isNullOrEmpty(file) || !Utilities.isNullOrEmpty(htmlText)) {
+    if (!ObjectToolkit.isNullOrEmpty(file) || !ObjectToolkit.isNullOrEmpty(htmlText)) {
       sendMessageWithAttachmentOrHtml(emailSenderDTO, file, htmlText);
     }
     EmailResponseDTO responseDTO = new EmailResponseDTO();
@@ -105,7 +105,7 @@ public class EmailService implements IEmailService {
 
               String template = strapiEmailTemplate.getTemplate();
               Map<String, String> finalParam =
-                  Utilities.getFinalMapFromValue(
+                  ObjectToolkit.getFinalMapFromValue(
                       emailRequestDTO.getParams(), strapiEmailTemplate.getParams());
               for (String key : finalParam.keySet()) {
                 template = template.replace("{{" + key + "}}", finalParam.get(key));

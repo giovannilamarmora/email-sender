@@ -2,3 +2,8 @@ env: Local # Used for Google Cloud LOG
 
 app:
   version: @project.version@ # Show Project Version
+
+filter:
+  requestResponse:
+    enabled: true
+    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*/css/*,*/js/*,*/images/*,*/favicon.ico,/index.html"
