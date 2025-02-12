@@ -7,6 +7,11 @@ spring:
     password: ${SERVER_TOKEN}
     sender-emails: ${SENDER_EMAILS}
 
+filter:
+  requestResponse:
+    enabled: true
+    shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*/css/*,*/js/*,*/images/*,*/favicon.ico,/index.html"
+
 logging:
   config: classpath:logback-google.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
   level:

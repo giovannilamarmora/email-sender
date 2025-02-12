@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.9'
 services:
   email-sender:
     container_name: email-sender
@@ -19,6 +19,9 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
       - APP_ENV=${APP_ENV}
       - STRAPI_AUTH_TOKEN=${STRAPI_AUTH_TOKEN}
+    volumes:
+      # Monta il volume "microservice" nella cartella /secrets (in sola lettura)
+      - microservice:/secrets:ro
     networks:
       docker-network:
         aliases:
@@ -26,4 +29,8 @@ services:
 
 networks:
   docker-network:
+    external: true
+
+volumes:
+  microservice:
     external: true

@@ -6,7 +6,7 @@ import io.github.giovannilamarmora.utils.interceptors.LogInterceptor;
 import io.github.giovannilamarmora.utils.interceptors.LogTimeTracker;
 import io.github.giovannilamarmora.utils.interceptors.Logged;
 import io.github.giovannilamarmora.utils.logger.LoggerFilter;
-import io.github.giovannilamarmora.utils.utilities.Utilities;
+import io.github.giovannilamarmora.utils.utilities.ObjectToolkit;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.List;
@@ -64,17 +64,17 @@ public class Dispatcher {
 
   private void validateEmails(SimpleMailMessage simpleMailMessage, MimeMessage mimeMessage) {
     String email_from;
-    if (!Utilities.isNullOrEmpty(simpleMailMessage)) {
+    if (!ObjectToolkit.isNullOrEmpty(simpleMailMessage)) {
       email_from =
-          Utilities.isNullOrEmpty(simpleMailMessage.getFrom())
+          ObjectToolkit.isNullOrEmpty(simpleMailMessage.getFrom())
               ? senderEmails.getFirst()
               : simpleMailMessage.getFrom();
       simpleMailMessage.setFrom(email_from);
     } else {
       try {
         email_from =
-            Utilities.isNullOrEmpty(mimeMessage.getFrom())
-                    || Utilities.isNullOrEmpty(mimeMessage.getFrom()[0])
+            ObjectToolkit.isNullOrEmpty(mimeMessage.getFrom())
+                    || ObjectToolkit.isNullOrEmpty(mimeMessage.getFrom()[0])
                 ? senderEmails.getFirst()
                 : mimeMessage.getFrom()[0].toString();
         mimeMessage.setFrom(email_from);
