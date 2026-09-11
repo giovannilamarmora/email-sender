@@ -1,4 +1,4 @@
-env: ${APP_ENV:Deploy} # Used for Google Cloud LOG
+env: ${APP_ENV:Production} # Used for Google Cloud LOG
 spring:
   mail:
     host: ${SMTP_HOST}
@@ -13,7 +13,7 @@ filter:
     shouldNotFilter: "**/swagger-ui/**,/api-docs,**/api-docs/**,*/,*/css/*,*/js/*,*/images/*,*/favicon.ico,/index.html"
 
 logging:
-  config: classpath:logback-google.xml # classpath:logback-google.xml, classpath:logback-logtail.xml
+  config: ${LOGBACK_FILE:classpath:logback-google.xml} # classpath:logback-google.xml, classpath:logback-logtail.xml
   level:
     com.giovannilamarmora.dispatch.emailsender: ${LOGGING_LEVEL}
     io.github.giovannilamarmora.utils: ${LOGGING_LEVEL}
@@ -26,4 +26,4 @@ app:
 rest:
   client:
     strapi:
-      baseUrl: http://app.strapi.cms:1337
+      baseUrl: ${STRAPI_BASE_URL:http://app.strapi.cms:1337}

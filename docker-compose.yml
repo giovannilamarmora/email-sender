@@ -1,27 +1,45 @@
+name: email-sender
+
 version: '3.9'
 services:
   email-sender:
     container_name: email-sender
-    image: ${DOCKER_REPOSITORY}:latest
+    image: ${DOCKER_REPOSITORY:-giovannilamarmora/email-sender}:${APP_VERSION:-latest}
     hostname: email.sender
     ports:
-      - "8003:8080"
+      - ${PORT:-8003:8080}
     environment:
-      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-deploy}
       - SMTP_HOST=${SMTP_HOST}
       - SMTP_PORT=${SMTP_PORT}
       - SERVER_EMAIL=${SERVER_EMAIL}
       - SERVER_TOKEN=${SERVER_TOKEN}
       - SENDER_EMAILS=${SENDER_EMAILS}
-      - LOGGING_LEVEL=${LOGGING_LEVEL}
-      - SHOW_UTILS_EXCEPTION_STACKTRACE=${SHOW_UTILS_EXCEPTION_STACKTRACE}
+      - LOGGING_LEVEL=${LOGGING_LEVEL:-INFO}
+      - LOGBACK_FILE=${LOGBACK_FILE:-classpath:logback-spring.xml}
+      - SHOW_UTILS_EXCEPTION_STACKTRACE=${SHOW_UTILS_EXCEPTION_STACKTRACE:-false}
       - GCLOUD_PROJECT=${GCLOUD_PROJECT}
       - GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
-      - APP_ENV=${APP_ENV}
+      - APP_ENV=${APP_ENV:-Production}
+      - STRAPI_BASE_URL=${STRAPI_BASE_URL}
       - STRAPI_AUTH_TOKEN=${STRAPI_AUTH_TOKEN}
     volumes:
       # Monta il volume "microservice" nella cartella /secrets (in sola lettura)
       - microservice:/secrets:ro
+
+    labels:
+      # 1. Attiva il monitoraggio di WUD
+      - "wud.watch=true"
+      # 2. Monitora specificamente il tag latest
+      - "wud.tag.include=^latest$"
+      # 3. Controlla le variazioni di hash digest SHA-256
+      - "wud.watch.digest=true"
+      # 4. Attiva il trigger di deploy automatico
+      - "wud.trigger.docker.local.enabled=true"
+      # 5. Forza l'esecuzione automatica immediata al rilevamento
+      - "wud.trigger.docker.local.auto=true"
+      - "wud.trigger.docker.local.threshold=all"
+
     networks:
       docker-network:
         aliases:
